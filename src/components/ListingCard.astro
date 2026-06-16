@@ -1,0 +1,19 @@
+
+---
+const { item, compact = false } = Astro.props
+---
+<article class="listing-card">
+  <a class="listing-img" href={`/listings/${item.slug}`}>
+    <img src={item.image} alt="" />
+    <span>{item.category}</span>
+  </a>
+  <div class="listing-body">
+    <div class="listing-title-row">
+      <h3><a href={`/listings/${item.slug}`}>{item.name}</a></h3>
+      <span class="verified"><svg class="icon"><use href="#i-badge" /></svg></span>
+    </div>
+    <p class="place">{item.area} <span>•</span> {item.distance}</p>
+    <p class="desc">{item.summary}</p>
+    <div class="status"><strong>Open now</strong><span>•</span><span>Closes {item.closes}</span></div>
+  </div>
+</article>

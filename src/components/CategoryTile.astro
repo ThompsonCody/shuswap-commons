@@ -1,0 +1,101 @@
+---
+import {
+  Utensils,
+  Hammer,
+  Trees,
+  ShoppingBag,
+  Leaf,
+  BriefcaseBusiness,
+  Users,
+  Bed,
+} from '@lucide/astro'
+
+const { title, subtitle, icon } = Astro.props
+
+const icons = {
+  utensils: Utensils,
+  tools: Hammer,
+  tree: Trees,
+  bag: ShoppingBag,
+  leaf: Leaf,
+  briefcase: BriefcaseBusiness,
+  users: Users,
+  bed: Bed,
+}
+
+const Icon = icons[icon as keyof typeof icons] ?? Trees
+---
+
+<a class="category-tile" href="/directory">
+  <Icon size={38} />
+  <strong>{title}</strong>
+  <span>{subtitle}</span>
+</a>
+
+<style>
+  .category-tile {
+    display: flex;
+    min-height: 164px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 14px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 14px;
+    background:
+      linear-gradient(145deg, rgba(255,255,255,0.075), rgba(255,255,255,0.02)),
+      rgba(12, 24, 25, 0.78);
+    color: var(--text);
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .category-tile:nth-child(4n),
+  .category-tile:nth-child(7n),
+  .category-tile:nth-child(8n) {
+    border-color: rgba(230, 160, 74, 0.35);
+    background:
+      linear-gradient(145deg, rgba(230, 160, 74, 0.14), rgba(255,255,255,0.025)),
+      rgba(12, 24, 25, 0.78);
+  }
+
+  svg {
+    color: rgba(244,241,234,0.74);
+    width: 38px;
+    height: 38px;
+    stroke-width: 2.1;
+  }
+
+  strong {
+    max-width: 145px;
+    font-size: 1rem;
+    line-height: 1.18;
+  }
+
+  span {
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
+  @media (max-width: 760px) {
+    .category-tile {
+      min-height: 112px;
+      gap: 8px;
+      padding: 14px 10px;
+    }
+
+    svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    strong {
+      font-size: 0.84rem;
+    }
+
+    span {
+      display: none;
+    }
+  }
+</style>

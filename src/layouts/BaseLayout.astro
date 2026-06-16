@@ -1,0 +1,28 @@
+---
+import '../styles/global.css'
+
+type Props = {
+  title?: string
+  description?: string
+}
+
+const {
+  title = 'Shuswap Commons',
+  description = 'A curated local directory and community commons for the Shuswap.',
+} = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="page">
+      <slot />
+    </div>
+  </body>
+</html>
