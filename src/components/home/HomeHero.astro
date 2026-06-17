@@ -3,10 +3,10 @@
     <div class="hero-copy">
       <p class="kicker">Local guide. Real people. Current info.</p>
 
-      <h1>
-        Find the
-        <span>good stuff</span>
-        in the Shuswap.
+      <h1 class="hero-title">
+        <span>Find the</span>
+        <span>good stuff in</span>
+        <span>the <em>Shuswap.</em></span>
       </h1>
 
       <p class="intro">
@@ -15,25 +15,35 @@
       </p>
 
       <form class="searchbar" action="/directory">
-        <div class="search-placeholder">
+        <label class="search-placeholder">
           <svg class="icon" aria-hidden="true">
             <use href="#i-search" />
           </svg>
 
           <span>Search businesses, services, or keywords...</span>
-        </div>
+          <input
+            class="sr-only"
+            type="search"
+            name="q"
+            aria-label="Search businesses, services, or keywords"
+          />
+        </label>
 
-        <div class="area-select">
+        <label class="area-select">
           <svg class="icon" aria-hidden="true">
             <use href="#i-pin" />
           </svg>
 
           <span>Any Area</span>
 
-          <svg class="icon" aria-hidden="true">
+          <svg class="icon chevron" aria-hidden="true">
             <use href="#i-chevron" />
           </svg>
-        </div>
+
+          <select class="sr-only" name="area" aria-label="Choose an area">
+            <option value="">Any Area</option>
+          </select>
+        </label>
 
         <button type="submit">Search</button>
       </form>
@@ -49,6 +59,10 @@
 
         <a class="link-arrow" href="/directory">
           Browse by Area
+
+          <svg class="icon" aria-hidden="true">
+            <use href="#i-arrow" />
+          </svg>
         </a>
       </div>
     </div>
@@ -60,8 +74,8 @@
         </svg>
 
         <p>
-          <strong>Rooted in community.</strong><br />
-          Here for the long run.
+          <strong>Rooted in community.</strong>
+          <span>Here for the long run.</span>
         </p>
       </div>
     </div>
