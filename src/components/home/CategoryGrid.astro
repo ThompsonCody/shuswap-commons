@@ -1,0 +1,24 @@
+---
+type Category = [name: string, sub: string, icon: string]
+
+type Props = {
+  categories: Category[]
+}
+
+const { categories } = Astro.props
+---
+
+<section class="wrapper categories" aria-label="Browse by category">
+  {
+    categories.map(([name, sub, icon]) => (
+      <a class="category-card glass" href="/directory">
+        <svg class="icon cat-icon" aria-hidden="true">
+          <use href={`#${icon}`} />
+        </svg>
+
+        <strong>{name}</strong>
+        <span>{sub}</span>
+      </a>
+    ))
+  }
+</section>

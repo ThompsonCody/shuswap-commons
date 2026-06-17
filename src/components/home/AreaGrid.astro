@@ -1,0 +1,31 @@
+---
+type Props = {
+  areas: string[]
+}
+
+const { areas } = Astro.props
+---
+
+<section class="wrapper home-section">
+  <div class="section-row">
+    <div class="section-title">
+      <h2>Explore by Area</h2>
+      <p>Communities across the Shuswap.</p>
+    </div>
+
+    <a class="link-arrow amber" href="/directory">
+      View all areas
+    </a>
+  </div>
+
+  <div class="area-grid">
+    {
+      areas.map((area) => (
+        <a class="area-card" href={`/directory?area=${encodeURIComponent(area)}`}>
+          <img src="/images/area-lake.jpg" alt={`${area} area`} />
+          <strong>{area}</strong>
+        </a>
+      ))
+    }
+  </div>
+</section>

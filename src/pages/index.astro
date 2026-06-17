@@ -1,9 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
-import ListingCard from '../components/ListingCard.astro'
+
+import HomeHero from '../components/home/HomeHero.astro'
+import CategoryGrid from '../components/home/CategoryGrid.astro'
+import RecentlyVerified from '../components/home/RecentlyVerified.astro'
+import AreaGrid from '../components/home/AreaGrid.astro'
+import TrustPanel from '../components/home/TrustPanel.astro'
+import HomeCTA from '../components/home/HomeCTA.astro'
+
 import { listings, areas } from '../data/mockListings'
 
-const cats = [
+const categories = [
   ['Food & Drink', 'Eat local', 'i-food'],
   ['Trades & Home Services', 'Fix, build, maintain', 'i-tool'],
   ['Outdoor & Recreation', 'Play outside', 'i-tree'],
@@ -12,93 +19,19 @@ const cats = [
   ['Professional Services', 'Plans, advice, support', 'i-briefcase'],
   ['Community & Nonprofits', 'Stronger together', 'i-users'],
   ['Accommodation & Travel', 'Stay & explore', 'i-bed'],
-]
+] as const
 ---
+
 <BaseLayout
   title="Shuswap Commons"
   description="Find trusted local businesses, services, makers, food, outdoor recreation, accommodations, and community resources across the Shuswap."
 >
-
-    <main>
-      <section class="home-hero">
-        <div class="wrapper home-hero-grid">
-          <div class="hero-copy">
-            <p class="kicker">Local guide. Real people. Current info.</p>
-            <h1>Find the<br />good stuff in<br />the <span>Shuswap.</span></h1>
-            <p class="intro">Your curated guide to local businesses, services, and community resources across the Shuswap.</p>
-
-            <form class="searchbar">
-              <div class="search-placeholder"><svg class="icon"><use href="#i-search" /></svg> Search businesses, services, or keywords...</div>
-              <div class="area-select"><svg class="icon"><use href="#i-pin" /></svg> Any Area <svg class="icon"><use href="#i-chevron" /></svg></div>
-              <button>Search</button>
-            </form>
-
-            <div class="hero-actions">
-              <a class="btn amber" href="/directory">Explore Directory <svg class="icon"><use href="#i-up" /></svg></a>
-              <a class="link-arrow amber" href="/directory">Browse by Area <svg class="icon"><use href="#i-arrow" /></svg></a>
-            </div>
-          </div>
-
-          <div class="hero-side">
-            <aside class="community-card glass">
-              <svg class="icon mountain"><use href="#i-mountain" /></svg>
-              <p>Rooted in community.<br />Here for the long run.</p>
-            </aside>
-          </div>
-        </div>
-      </section>
-
-      <section class="wrapper categories">
-        {cats.map(([name, sub, icon]) => (
-          <a class="category-card glass" href="/directory">
-            <svg class="icon cat-icon"><use href={`#${icon}`} /></svg>
-            <strong>{name}</strong>
-            <span>{sub}</span>
-          </a>
-        ))}
-      </section>
-
-      <section class="wrapper home-section">
-        <div class="section-row">
-          <div class="section-title"><h2>Recently Verified</h2><p>Fresh info you can count on.</p></div>
-          <a class="link-arrow" href="/directory">View all listings <svg class="icon"><use href="#i-arrow" /></svg></a>
-        </div>
-        <div class="listing-grid">
-          {listings.slice(0, 4).map((item) => <ListingCard item={item} />)}
-        </div>
-      </section>
-
-      <section class="wrapper home-section">
-        <div class="section-row">
-          <div class="section-title"><h2>Explore by Area</h2><p>Communities across the Shuswap.</p></div>
-          <a class="link-arrow" href="/directory">View all areas <svg class="icon"><use href="#i-arrow" /></svg></a>
-        </div>
-        <div class="area-grid">
-          {areas.map((area) => (
-            <a class="area-card" href="/directory"><img src="/images/area-lake.jpg" alt="" /><strong>{area}</strong></a>
-          ))}
-        </div>
-      </section>
-
-      <section class="wrapper trust glass">
-        <div>
-          <h2>Clean discovery, local trust, current info.</h2>
-          <p>We keep things useful and up to date so you can spend less time searching and more time living here.</p>
-        </div>
-        <div><span class="circle-icon green"><svg class="icon"><use href="#i-star" /></svg></span><strong>Curated listings</strong><p>Quality over quantity. We highlight reputable local businesses and organizations.</p></div>
-        <div><span class="circle-icon"><svg class="icon"><use href="#i-refresh" /></svg></span><strong>Freshness signals</strong><p>See when listings were last verified so you know the information is current.</p></div>
-        <div><span class="circle-icon amber"><svg class="icon"><use href="#i-users" /></svg></span><strong>Community updates</strong><p>Local news, events, and resources shared by and for the Shuswap.</p></div>
-      </section>
-
-      <section class="wrapper cta">
-        <div>
-          <h2>See something missing or not quite right?</h2>
-          <p>Help keep the Shuswap Commons accurate and useful for everyone.</p>
-        </div>
-        <div class="cta-actions">
-          <a class="btn amber" href="/">Add Your Business <svg class="icon"><use href="#i-arrow" /></svg></a>
-          <a class="btn" href="/">Suggest an Edit <svg class="icon"><use href="#i-arrow" /></svg></a>
-        </div>
-      </section>
-    </main>
+  <main>
+    <HomeHero />
+    <CategoryGrid categories={categories} />
+    <RecentlyVerified listings={listings} />
+    <AreaGrid areas={areas} />
+    <TrustPanel />
+    <HomeCTA />
+  </main>
 </BaseLayout>
