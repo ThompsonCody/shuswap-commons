@@ -1,8 +1,16 @@
 ---
-type Category = [name: string, sub: string, icon: string]
+type CategoryTone = 'blue' | 'green' | 'amber'
+
+type Category = {
+  name: string
+  sub: string
+  icon: string
+  href?: string
+  tone?: CategoryTone
+}
 
 type Props = {
-  categories: Category[]
+  categories: readonly Category[]
 }
 
 const { categories } = Astro.props
@@ -10,14 +18,21 @@ const { categories } = Astro.props
 
 <section class="wrapper categories" aria-label="Browse by category">
   {
-    categories.map(([name, sub, icon]) => (
-      <a class="category-card glass" href="/directory">
+    categories.map((category) => (
+      <a
+        class:list={[
+          'category-card',
+          'glass',
+          category.tone ? `is-${category.tone}` : '',
+        ]}
+        href={category.href ?? '/directory'}
+      >
         <svg class="icon cat-icon" aria-hidden="true">
-          <use href={`#${icon}`} />
+          <use href={`#${category.icon}`} />
         </svg>
 
-        <strong>{name}</strong>
-        <span>{sub}</span>
+        <strong>{category.name}</strong>
+        <span>{category.sub}</span>
       </a>
     ))
   }

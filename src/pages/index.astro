@@ -11,14 +11,61 @@ import HomeCTA from '../components/home/HomeCTA.astro'
 import { listings, areas } from '../data/mockListings'
 
 const categories = [
-  ['Food & Drink', 'Eat local', 'i-food'],
-  ['Trades & Home Services', 'Fix, build, maintain', 'i-tool'],
-  ['Outdoor & Recreation', 'Play outside', 'i-tree'],
-  ['Shops & Local Makers', 'Buy local', 'i-bag'],
-  ['Health & Wellness', 'Feel your best', 'i-leaf'],
-  ['Professional Services', 'Plans, advice, support', 'i-briefcase'],
-  ['Community & Nonprofits', 'Stronger together', 'i-users'],
-  ['Accommodation & Travel', 'Stay & explore', 'i-bed'],
+  {
+    name: 'Food & Drink',
+    sub: 'Eat local',
+    icon: 'i-food',
+    href: '/directory?category=Food%20%26%20Drink',
+  },
+  {
+    name: 'Trades & Home Services',
+    sub: 'Fix, build, maintain',
+    icon: 'i-tool',
+    href: '/directory?category=Trades%20%26%20Home%20Services',
+    tone: 'green',
+  },
+  {
+    name: 'Outdoor & Recreation',
+    sub: 'Play outside',
+    icon: 'i-tree',
+    href: '/directory?category=Outdoor%20%26%20Recreation',
+    tone: 'blue',
+  },
+  {
+    name: 'Shops & Local Makers',
+    sub: 'Buy local',
+    icon: 'i-bag',
+    href: '/directory?category=Shops%20%26%20Local%20Makers',
+    tone: 'amber',
+  },
+  {
+    name: 'Health & Wellness',
+    sub: 'Feel your best',
+    icon: 'i-leaf',
+    href: '/directory?category=Health%20%26%20Wellness',
+    tone: 'green',
+  },
+  {
+    name: 'Professional Services',
+    sub: 'Plans, advice, support',
+    icon: 'i-briefcase',
+    href: '/directory?category=Professional%20Services',
+    tone: 'blue',
+  },
+  {
+    name: 'Community & Nonprofits',
+    sub: 'Stronger together',
+    icon: 'i-users',
+    href: '/directory?category=Community%20%26%20Nonprofits',
+    tone: 'amber',
+  },
+  {
+    name: 'Accommodation & Travel',
+    sub: 'Stay & explore',
+    icon: 'i-bed',
+    href: '/directory?category=Accommodation%20%26%20Travel',
+    tone: 'green',
+  },
 ] as const
 ---
 
