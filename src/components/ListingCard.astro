@@ -1,19 +1,76 @@
+---
+type Listing = {
+  name: string
+  slug: string
+  category: string
+  area: string
+  distance: string
+  image: string
+  summary: string
+  closes: string
+  verified: string
+}
 
+type Props = {
+  item: Listing
+  variant?: 'home' | 'directory'
+}
+
+const { item, variant = 'directory' } = Astro.props
+const isHome = variant === 'home'
 ---
-const { item, compact = false } = Astro.props
----
-<article class="listing-card">
-  <a class="listing-img" href={`/listings/${item.slug}`}>
-    <img src={item.image} alt="" />
-    <span>{item.category}</span>
+
+<article class:list={['business-card', `business-card--${variant}`]}>
+  <a class="business-card__image" href={`/listings/${item.slug}`}>
+    <img src={item.image} alt={`${item.name} in ${item.area}`} />
   </a>
-  <div class="listing-body">
-    <div class="listing-title-row">
-      <h3><a href={`/listings/${item.slug}`}>{item.name}</a></h3>
-      <span class="verified"><svg class="icon"><use href="#i-badge" /></svg></span>
+
+  <div class="business-card__body">
+    {!isHome && <p class="business-card__eyebrow">{item.category}</p>}
+
+    <div class="business-card__title-row">
+      <h3>
+        <a href={`/listings/${item.slug}`}>{item.name}</a>
+      </h3>
+
+      <span class="verified" aria-label="Verified listing">
+        <svg class="icon" aria-hidden="true">
+          <use href="#i-badge" />
+        </svg>
+      </span>
     </div>
-    <p class="place">{item.area} <span>•</span> {item.distance}</p>
-    <p class="desc">{item.summary}</p>
-    <div class="status"><strong>Open now</strong><span>•</span><span>Closes {item.closes}</span></div>
+
+    {
+      isHome ? (
+        <p class="business-card__meta">
+          <span class="business-card__category">{item.category}</span>
+          <span aria-hidden="true">•</span>
+          <span>{item.area}</span>
+        </p>
+      ) : (
+        <p class="business-card__meta">
+          <span>{item.area}</span>
+          <span aria-hidden="true">•</span>
+          <span>{item.distance}</span>
+        </p>
+      )
+    }
+
+    {!isHome && <p class="business-card__summary">{item.summary}</p>}
+
+    {
+      isHome ? (
+        <div class="business-card__verified-row">
+          <span>Last verified</span>
+          <time datetime={item.verified}>{item.verified}</time>
+        </div>
+      ) : (
+        <div class="business-card__status">
+          <strong>Open now</strong>
+          <span aria-hidden="true">•</span>
+          <span>Closes {item.closes}</span>
+        </div>
+      )
+    }
   </div>
 </article>

@@ -31,7 +31,13 @@ import { listings } from '../data/mockListings'
   </section>
   <section class="wrapper">
     <div class="results-head"><span>Showing 1–12 of 128 results</span><div class="toggle"><span>Grid</span><span>Map</span></div></div>
-    <div class="directory-grid">{listings.map((item) => <ListingCard item={item} />)}</div>
+    <div class="directory-grid">
+      {
+        listings.map((item) => (
+          <ListingCard item={item} variant="directory" />
+        ))
+      }
+    </div> 
   </section>
   <section class="wrapper cta">
     <div><h2>Help keep the Shuswap Commons current.</h2><p>Know a great local business we should feature? Or see something that needs an update?</p></div>
