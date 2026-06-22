@@ -2,10 +2,10 @@ export const ROUTES = {
   home: '/',
   directory: '/directory',
   areas: '/areas',
+  categories: '/categories',
   about: '/about',
   submit: '/submit',
 
-  categories: '/directory#categories',
   recentlyVerified: '/directory?verified=true',
   communityUpdates: '/about#community-updates',
 

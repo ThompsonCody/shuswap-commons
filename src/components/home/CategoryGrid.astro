@@ -1,13 +1,6 @@
 ---
-type CategoryTone = 'blue' | 'green' | 'amber'
-
-type Category = {
-  name: string
-  sub: string
-  icon: string
-  href?: string
-  tone?: CategoryTone
-}
+import type { Category } from '../../data/categories'
+import { getCategoryHref } from '../../data/siteRoutes'
 
 type Props = {
   categories: readonly Category[]
@@ -25,7 +18,7 @@ const { categories } = Astro.props
           'glass',
           category.tone ? `is-${category.tone}` : '',
         ]}
-        href={category.href ?? '/directory'}
+        href={getCategoryHref(category.name)}
       >
         <svg class="icon cat-icon" aria-hidden="true">
           <use href={`#${category.icon}`} />

@@ -1243,3 +1243,115 @@ button, input { font: inherit; color: inherit; }
     height: 128px;
   }
 }
+
+/* categories page */
+
+.category-page-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.category-page-card {
+  --category-glow: rgba(244, 241, 234, .07);
+  --category-line: var(--line);
+
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+  border: 1px solid var(--category-line);
+  border-radius: 18px;
+  padding: 26px;
+  background:
+    radial-gradient(circle at 0% 0%, var(--category-glow), rgba(255, 255, 255, 0) 56%),
+    linear-gradient(145deg, rgba(255, 255, 255, .065), rgba(255, 255, 255, .018)),
+    rgba(9, 18, 19, .88);
+}
+
+.category-page-card.is-amber {
+  --category-glow: rgba(237, 166, 74, .2);
+  --category-line: rgba(237, 166, 74, .34);
+}
+
+.category-page-card.is-green {
+  --category-glow: rgba(110, 213, 150, .16);
+  --category-line: rgba(110, 213, 150, .24);
+}
+
+.category-page-card.is-blue {
+  --category-glow: rgba(96, 154, 190, .16);
+  --category-line: rgba(130, 180, 205, .24);
+}
+
+.category-page-card__icon {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, .045);
+  color: var(--amber);
+}
+
+.category-page-card__icon .icon {
+  width: 34px;
+  height: 34px;
+}
+
+.category-page-card h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.25rem, 1.8vw, 1.65rem);
+  line-height: 1.06;
+  letter-spacing: -.045em;
+}
+
+.category-page-card p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  line-height: 1.48;
+}
+
+.category-page-card__meta {
+  display: grid;
+  gap: 7px;
+  margin-top: 18px;
+}
+
+.category-page-card__meta span {
+  color: var(--amber);
+  font-weight: 850;
+}
+
+.category-page-card__meta small {
+  color: var(--soft);
+  line-height: 1.35;
+}
+
+@media (max-width: 900px) {
+  .category-page-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .category-page-card {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 16px;
+    border-radius: 14px;
+    padding: 18px;
+  }
+
+  .category-page-card__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+  }
+
+  .category-page-card__icon .icon {
+    width: 26px;
+    height: 26px;
+  }
+}

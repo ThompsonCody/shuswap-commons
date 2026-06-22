@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { ROUTES } from '../data/siteRoutes'
+import { categories } from '../data/categories'
 ---
 
 <BaseLayout
@@ -53,14 +54,11 @@ import { ROUTES } from '../data/siteRoutes'
           <label class="form-field">
             <span>Category</span>
             <select name="category">
-              <option>Food & Drink</option>
-              <option>Trades & Home Services</option>
-              <option>Outdoor & Recreation</option>
-              <option>Shops & Local Makers</option>
-              <option>Health & Wellness</option>
-              <option>Professional Services</option>
-              <option>Community & Nonprofits</option>
-              <option>Accommodation & Travel</option>
+                {
+                    categories.map((category) => (
+                    <option value={category.name}>{category.name}</option>
+                    ))
+                }
             </select>
           </label>
 
