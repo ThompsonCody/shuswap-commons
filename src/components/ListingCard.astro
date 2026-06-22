@@ -1,15 +1,6 @@
 ---
-type Listing = {
-  name: string
-  slug: string
-  category: string
-  area: string
-  distance: string
-  image: string
-  summary: string
-  closes: string
-  verified: string
-}
+import type { Listing } from '../data/mockListings'
+import { getListingHref } from '../data/siteRoutes'
 
 type Props = {
   item: Listing
@@ -18,10 +9,11 @@ type Props = {
 
 const { item, variant = 'directory' } = Astro.props
 const isHome = variant === 'home'
+const listingHref = getListingHref(item.slug)
 ---
 
 <article class:list={['business-card', `business-card--${variant}`]}>
-  <a class="business-card__image" href={`/listings/${item.slug}`}>
+  <a class="business-card__image" href={listingHref}>
     <img src={item.image} alt={`${item.name} in ${item.area}`} />
   </a>
 
@@ -30,7 +22,7 @@ const isHome = variant === 'home'
 
     <div class="business-card__title-row">
       <h3>
-        <a href={`/listings/${item.slug}`}>{item.name}</a>
+        <a href={listingHref}>{item.name}</a>
       </h3>
 
       <span class="verified" aria-label="Verified listing">
