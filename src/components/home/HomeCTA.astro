@@ -1,3 +1,7 @@
+---
+import { getSubmitHref } from '../../data/siteRoutes'
+---
+
 <section class="wrapper cta">
   <div>
     <h2>See something missing or not quite right?</h2>
@@ -8,11 +12,11 @@
   </div>
 
   <div class="cta-actions">
-    <a class="btn amber" href="/">
+    <a class="btn amber" href={getSubmitHref('add')}>
       Add Your Business
     </a>
 
-    <a class="btn" href="/">
+    <a class="btn" href={getSubmitHref('edit')}>
       Suggest an Edit
     </a>
   </div>

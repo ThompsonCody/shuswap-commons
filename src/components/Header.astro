@@ -1,4 +1,6 @@
 ---
+import { ROUTES, getSubmitHref } from '../data/siteRoutes'
+
 type Props = {
   overlay?: boolean
 }
@@ -8,41 +10,41 @@ const { overlay = true } = Astro.props
 
 <header class:list={['site-header', { 'is-overlay': overlay }]}>
   <div class="wrapper">
-    <a class="logo" href="/" aria-label="Shuswap Commons home">
+    <a class="logo" href={ROUTES.home} aria-label="Shuswap Commons home">
       <span>Shuswap</span>
       <span>Commons</span>
     </a>
 
     <nav class="nav" aria-label="Main navigation">
-      <a href="/directory">
+      <a href={ROUTES.directory}>
         Directory
         <svg class="icon" aria-hidden="true">
           <use href="#i-chevron" />
         </svg>
       </a>
 
-      <a href="/directory">Areas</a>
+      <a href={ROUTES.areas}>Areas</a>
 
-      <a href="/directory">
+      <a href={ROUTES.categories}>
         Categories
         <svg class="icon" aria-hidden="true">
           <use href="#i-chevron" />
         </svg>
       </a>
 
-      <a href="/">About</a>
-      <a href="/">Submit</a>
+      <a href={ROUTES.about}>About</a>
+      <a href={ROUTES.submit}>Submit</a>
     </nav>
 
     <div class="header-actions">
-      <a class="add-btn" href="/">
+      <a class="add-btn" href={ROUTES.submit}>
         <svg class="icon" aria-hidden="true">
           <use href="#i-plus" />
         </svg>
         Add or Update
       </a>
 
-      <a class="user-btn" href="/" aria-label="Account">
+      <a class="user-btn" href={getSubmitHref('claim')} aria-label="Claim or update a listing">
         <svg class="icon" aria-hidden="true">
           <use href="#i-user" />
         </svg>
@@ -50,7 +52,7 @@ const { overlay = true } = Astro.props
     </div>
 
     <div class="mobile-header">
-      <a class="mobile-logo" href="/" aria-label="Shuswap Commons home">
+      <a class="mobile-logo" href={ROUTES.home} aria-label="Shuswap Commons home">
         <svg class="icon tree" aria-hidden="true">
           <use href="#i-tree" />
         </svg>
@@ -59,13 +61,17 @@ const { overlay = true } = Astro.props
       </a>
 
       <div class="mobile-icons" aria-label="Mobile navigation actions">
-        <svg class="icon" aria-hidden="true">
-          <use href="#i-search" />
-        </svg>
+        <a href={ROUTES.directory} aria-label="Search directory">
+          <svg class="icon" aria-hidden="true">
+            <use href="#i-search" />
+          </svg>
+        </a>
 
-        <svg class="icon" aria-hidden="true">
-          <use href="#i-menu" />
-        </svg>
+        <a href={ROUTES.directory} aria-label="Browse directory">
+          <svg class="icon" aria-hidden="true">
+            <use href="#i-menu" />
+          </svg>
+        </a>
       </div>
     </div>
   </div>

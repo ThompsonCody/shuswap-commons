@@ -1,4 +1,6 @@
 ---
+import { ROUTES, getAreaHref } from '../../data/siteRoutes'
+
 type Props = {
   areas: string[]
 }
@@ -13,15 +15,19 @@ const { areas } = Astro.props
       <p>Communities across the Shuswap.</p>
     </div>
 
-    <a class="link-arrow amber" href="/directory">
+    <a class="link-arrow amber" href={ROUTES.areas}>
       View all areas
+
+      <svg class="icon" aria-hidden="true">
+        <use href="#i-arrow" />
+      </svg>
     </a>
   </div>
 
   <div class="area-grid">
     {
       areas.map((area) => (
-        <a class="area-card" href={`/directory?area=${encodeURIComponent(area)}`}>
+        <a class="area-card" href={getAreaHref(area)}>
           <img src="/images/area-lake.jpg" alt={`${area} area`} />
           <strong>{area}</strong>
         </a>

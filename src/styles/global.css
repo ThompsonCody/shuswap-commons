@@ -1050,3 +1050,196 @@ button, input { font: inherit; color: inherit; }
   .footer-grid { grid-template-columns:1fr 1fr; gap:28px; }
   .footer-bottom { flex-direction:column; }
 }
+
+
+
+/* static content pages: areas, about, submit */
+
+.page-hero--compact {
+  padding-bottom: 86px;
+}
+
+.content-section {
+  padding-top: 70px;
+}
+
+.content-section + .content-section {
+  padding-top: 54px;
+}
+
+.content-panel {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 34px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .065), rgba(255, 255, 255, .018)),
+    rgba(9, 18, 19, .88);
+}
+
+.content-panel h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.65rem, 2.4vw, 2.35rem);
+  line-height: 1.02;
+  letter-spacing: -.06em;
+}
+
+.content-panel p {
+  margin: 14px 0 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.area-page-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.area-page-card {
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.area-page-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.area-page-card div {
+  padding: 22px;
+}
+
+.area-page-card h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.3rem;
+  line-height: 1.08;
+  letter-spacing: -.04em;
+}
+
+.area-page-card p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.area-page-card span {
+  display: inline-flex;
+  margin-top: 18px;
+  color: var(--amber);
+  font-weight: 850;
+}
+
+.submit-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 24px;
+  padding-top: 70px;
+}
+
+.submit-form {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 34px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 26px;
+}
+
+.form-field {
+  display: grid;
+  gap: 8px;
+}
+
+.form-field.full {
+  grid-column: 1 / -1;
+}
+
+.form-field span {
+  color: var(--ink);
+  font-size: .9rem;
+  font-weight: 850;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 15px;
+  background: rgba(4, 10, 11, .58);
+  color: var(--ink);
+  font: inherit;
+}
+
+.form-field textarea {
+  resize: vertical;
+}
+
+.submit-button {
+  margin-top: 22px;
+}
+
+.submit-side {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+}
+
+@media (max-width: 1180px) {
+  .area-page-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .submit-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .submit-side {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .page-hero--compact {
+    padding-bottom: 34px;
+  }
+
+  .content-section {
+    padding-top: 38px;
+  }
+
+  .about-grid,
+  .area-page-grid,
+  .form-grid,
+  .submit-side {
+    grid-template-columns: 1fr;
+  }
+
+  .content-panel,
+  .submit-form {
+    padding: 22px;
+    border-radius: 14px;
+  }
+
+  .submit-layout {
+    padding-top: 38px;
+  }
+
+  .area-page-card img {
+    height: 128px;
+  }
+}

@@ -1,10 +1,12 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import { listings } from '../../data/mockListings'
+import { getCategoryHref, getSubmitHref } from '../../data/siteRoutes'
 export function getStaticPaths() { return listings.map((listing) => ({ params: { slug: listing.slug }, props: { listing } })) }
 const { listing } = Astro.props
 const related = listings.filter((item) => item.slug !== listing.slug).slice(0, 3)
 const gallery = ['/images/area-lake.jpg','/images/listing-paddles.jpg','/images/listing-deck.jpg','/images/listing-canoes.jpg','/images/hero-shuswap.jpg','/images/listing-paddles.jpg']
+const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${listing.name} ${listing.area} BC`)}`
 ---
 <BaseLayout
   title={`${listing.name} | Shuswap Commons`}
@@ -13,15 +15,25 @@ const gallery = ['/images/area-lake.jpg','/images/listing-paddles.jpg','/images/
 <main>
   <section class="detail-hero" style={`background-image: linear-gradient(90deg, rgba(5,12,13,.98), rgba(5,12,13,.74) 34%, rgba(5,12,13,.18) 78%), linear-gradient(to bottom, rgba(5,12,13,.04), #061011 100%), url('${listing.image}')`}>
     <div class="wrapper">
-      <div class="breadcrumbs"><a href="/">Home</a><span>›</span><a href="/directory">Directory</a><span>›</span><span>{listing.category}</span><span>›</span><span>{listing.name}</span></div>
+      <div class="breadcrumbs">
+          <a href="/">Home</a>
+          <span>›</span>
+          <a href="/directory">Directory</a>
+          <span>›</span>
+          <a href={getCategoryHref(listing.category)}>{listing.category}</a>
+          <span>›</span>
+          <span>{listing.name}</span>
+      </div>
       <h1>{listing.name} <span class="verified"><svg class="icon"><use href="#i-badge" /></svg></span></h1>
       <p class="detail-meta">{listing.category} <span>•</span> {listing.area}, BC</p>
       <p class="detail-summary">{listing.summary}</p>
       <div class="detail-actions">
         <a class="btn amber" href="/"><svg class="icon"><use href="#i-globe"/></svg>Visit Website <svg class="icon"><use href="#i-up"/></svg></a>
         <a class="btn" href="/"><svg class="icon"><use href="#i-phone"/></svg>(250) 836-1122</a>
-        <a class="btn" href="/"><svg class="icon"><use href="#i-pin"/></svg>Get Directions</a>
-        <a class="btn" href="/"><svg class="icon"><use href="#i-edit"/></svg>Suggest an Edit</a>
+        <a class="btn" href={mapHref}> <svg class="icon"><use href="#i-pin"/></svg>Get Directions</a>
+        <a class="btn" href={getSubmitHref('edit', listing.slug)}> 
+          <svg class="icon"><use href="#i-edit"/></svg> Suggest an Edit
+        </a>
       </div>
       <p class="verified-line"><span class="verified"><svg class="icon"><use href="#i-badge"/></svg></span>Last verified: {listing.verified}</p>
     </div>
@@ -44,7 +56,15 @@ const gallery = ['/images/area-lake.jpg','/images/listing-paddles.jpg','/images/
     </div>
 
     <aside class="side-col">
-      <article class="panel"><h2>Location</h2><div class="map-card"><svg class="icon" style="width:44px;height:44px"><use href="#i-pin"/></svg></div><a class="small-btn full" href="/">Open in Google Maps <svg class="icon"><use href="#i-up"/></svg></a></article>
+      <article class="panel"><h2>Location</h2>
+        <div class="map-card"><svg class="icon" style="width:44px;height:44px">
+          <use href="#i-pin"/></svg>
+        </div>
+        <a class="small-btn full" href={mapHref} target="_blank" rel="noreferrer">
+  Open in Google Maps
+          <svg class="icon"><use href="#i-up"/></svg>
+        </a>
+      </article>
       <article class="panel"><h2>Photos</h2><div class="photo-grid">{gallery.map((img) => <img src={img} alt="" />)}</div><a class="small-btn full" href="/">View all photos (18) <svg class="icon"><use href="#i-up"/></svg></a></article>
       <article class="panel"><h2>You might also like</h2><div class="related">{related.map((item) => <a class="mini-listing" href={`/listings/${item.slug}`}><img src={item.image} alt="" /><div><h3>{item.name}</h3><p>{item.category} • {item.area}</p></div><span class="verified"><svg class="icon"><use href="#i-badge"/></svg></span></a>)}</div></article>
     </aside>
@@ -52,7 +72,17 @@ const gallery = ['/images/area-lake.jpg','/images/listing-paddles.jpg','/images/
 
   <section class="wrapper cta">
     <div><h2>Own this business?</h2><p>Claim your listing to update details, add photos, respond to reviews, and more.</p></div>
-    <div class="cta-actions"><a class="btn amber" href="/">Claim This Listing <svg class="icon"><use href="#i-arrow"/></svg></a><a class="btn" href="/">Suggest an Edit <svg class="icon"><use href="#i-arrow"/></svg></a></div>
+    <div class="cta-actions">
+      <a class="btn amber" href={getSubmitHref('claim', listing.slug)}>
+        Claim This Listing
+        <svg class="icon"><use href="#i-arrow"/></svg>
+      </a>
+
+      <a class="btn" href={getSubmitHref('edit', listing.slug)}>
+        Suggest an Edit
+        <svg class="icon"><use href="#i-arrow"/></svg>
+      </a>
+    </div>
   </section>
 </main>
 
