@@ -31,6 +31,10 @@ export type Listing = {
   address: string
   mapQuery: string
   mapImage: string
+  coordinates: {
+    lat: number
+    lng: number
+  }
 
   detailAbout: string[]
   hours: ListingHours[]
@@ -80,6 +84,10 @@ export const listings: Listing[] = [
     address: '240 Maple Street NE, Salmon Arm, BC',
     mapQuery: 'Maple Street Diner Salmon Arm BC',
     mapImage: '/images/area-lake.jpg',
+    coordinates: {
+      lat: 50.7008,
+      lng: -119.2835,
+    },
 
     detailAbout: [
       'A casual local diner serving comfort food, daily specials, coffee, and friendly service in central Salmon Arm.',
@@ -125,6 +133,10 @@ export const listings: Listing[] = [
     address: 'Blind Bay, BC',
     mapQuery: 'Shuswap Deck Works Blind Bay BC',
     mapImage: '/images/area-lake.jpg',
+    coordinates: {
+      lat: 50.8758,
+      lng: -119.3865,
+    },
 
     detailAbout: [
       'A local deck and outdoor-living contractor focused on durable builds, lake-country homes, railings, and exterior upgrades.',
@@ -166,6 +178,10 @@ export const listings: Listing[] = [
     address: '1221 Lakeshore Dr, Sicamous, BC V0E 2V1',
     mapQuery: 'Shuswap Paddles Sicamous BC',
     mapImage: '/images/area-lake.jpg',
+    coordinates: {
+      lat: 50.8379,
+      lng: -118.9851,
+    },
 
     detailAbout: [
       'Paddle the Shuswap your way with kayak, canoe, and SUP rentals, guided tours, and friendly local advice.',
@@ -219,6 +235,10 @@ export const listings: Listing[] = [
     address: 'Anglemont, BC',
     mapQuery: 'North Shore Mercantile Anglemont BC',
     mapImage: '/images/area-lake.jpg',
+    coordinates: {
+      lat: 50.9675,
+      lng: -119.1712,
+    },
 
     detailAbout: [
       'A small North Shuswap shop featuring home goods, gifts, local maker items, and useful finds for lake-country living.',
@@ -260,6 +280,10 @@ export const listings: Listing[] = [
     address: 'Salmon Arm, BC',
     mapQuery: 'Tru Balance Wellness Salmon Arm BC',
     mapImage: '/images/area-lake.jpg',
+    coordinates: {
+      lat: 50.7018,
+      lng: -119.2802,
+    },
 
     detailAbout: [
       'A wellness-focused local service offering massage therapy, coaching, and holistic support for everyday wellbeing.',
@@ -309,6 +333,11 @@ export const listings: Listing[] = [
     address: 'Salmon Arm, BC',
     mapQuery: 'Harper Legal Group Salmon Arm BC',
     mapImage: '/images/area-lake.jpg',
+    coordinates: {
+      lat: 50.6989,
+      lng: -119.2861,
+    },
+
 
     detailAbout: [
       'A local professional services office helping residents and businesses with practical legal needs.',
@@ -350,6 +379,11 @@ export const listings: Listing[] = [
     address: 'Salmon Arm, BC',
     mapQuery: 'Shuswap Watershed Council Salmon Arm BC',
     mapImage: '/images/area-lake.jpg',
+    coordinates: {
+      lat: 50.6995,
+      lng: -119.2814,
+    },
+
 
     detailAbout: [
       'A community-focused organization supporting education, stewardship, and practical action around Shuswap lakes and rivers.',
@@ -391,6 +425,10 @@ export const listings: Listing[] = [
     address: 'Sicamous, BC',
     mapQuery: 'Lakeside Retreat B&B Sicamous BC',
     mapImage: '/images/area-lake.jpg',
+    coordinates: {
+      lat: 50.834,
+      lng: -118.9905,
+    },
 
     detailAbout: [
       'A quiet lake-country stay option for visitors looking for water access, mountain views, and a slower Shuswap pace.',
@@ -440,6 +478,10 @@ export const listings: Listing[] = [
     address: 'Chase, BC',
     mapQuery: 'Shuswap Plumbing Co Chase BC',
     mapImage: '/images/area-lake.jpg',
+    coordinates: {
+      lat: 50.8188,
+      lng: -119.6842,
+    },
 
     detailAbout: [
       'A practical trades service for plumbing repairs, fixture upgrades, renovations, and new installs.',
@@ -481,6 +523,10 @@ export const listings: Listing[] = [
     address: 'Sicamous, BC',
     mapQuery: 'Foothills Coffee Co Sicamous BC',
     mapImage: '/images/area-lake.jpg',
+    coordinates: {
+      lat: 50.8358,
+      lng: -118.9878,
+    },
 
     detailAbout: [
       'A local coffee stop for roasted coffee, tea, baked goods, and a slower pause during a Shuswap day.',
@@ -530,6 +576,10 @@ export const listings: Listing[] = [
     address: 'Salmon Arm, BC',
     mapQuery: 'Shuswap Trail Collective Salmon Arm BC',
     mapImage: '/images/area-lake.jpg',
+    coordinates: {
+      lat: 50.7265,
+      lng: -119.269,
+    },
 
     detailAbout: [
       'A recreation-focused community group supporting local trail maintenance, stewardship, events, and outdoor access.',
@@ -571,6 +621,10 @@ export const listings: Listing[] = [
     address: 'Salmon Arm, BC',
     mapQuery: 'ClearPath Accounting Salmon Arm BC',
     mapImage: '/images/area-lake.jpg',
+    coordinates: {
+      lat: 50.7072,
+      lng: -119.2989,
+    },
 
     detailAbout: [
       'A local accounting and bookkeeping service helping small businesses, contractors, and residents stay organized.',

@@ -1,3 +1,4 @@
+@import 'leaflet/dist/leaflet.css';
 
 :root {
   --bg: #061011;
@@ -778,6 +779,78 @@ button, input { font: inherit; color: inherit; }
   margin-left: auto;
   color: var(--muted);
 }
+.directory-view-toggle {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.directory-view-button {
+  min-height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--soft);
+  padding: 0 14px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.directory-view-button.active {
+  color: var(--amber);
+  border-color: var(--amber);
+}
+
+.directory-map {
+  margin-top: 24px;
+  overflow: hidden;
+  border-radius: 14px;
+}
+
+.directory-map-copy {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.directory-map-copy p {
+  margin: 0;
+  color: var(--cream);
+  font-weight: 800;
+}
+
+.directory-map-copy span {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.directory-map-canvas {
+  min-height: 620px;
+  width: 100%;
+  background: #10201e;
+}
+
+.directory-map-canvas .leaflet-container {
+  font: inherit;
+}
+
+.directory-map-canvas .leaflet-popup-content-wrapper,
+.directory-map-canvas .leaflet-popup-tip {
+  background: #10201e;
+  color: var(--cream);
+}
+
+.directory-map-canvas .leaflet-popup-content {
+  margin: 12px 14px;
+  line-height: 1.45;
+}
+
+.directory-map-canvas .leaflet-popup-content a {
+  color: var(--amber);
+  font-weight: 800;
+}
 .results-head { display: flex; justify-content: space-between; align-items: center; margin: 32px 0 22px; color: var(--muted); }
 .toggle { display: flex; gap: 8px; }
 .toggle span { min-height: 38px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 8px; padding: 0 14px; }
@@ -839,6 +912,32 @@ button, input { font: inherit; color: inherit; }
   .trust > div + div { border-left: 0; padding-left: 0; }
   .detail-layout { grid-template-columns: 1fr; }
   .side-col { grid-template-columns: repeat(3,1fr); align-items:start; }
+
+  .directory-map-copy {
+    display: block;
+  }
+
+  .directory-map-copy span {
+    display: block;
+    margin-top: 4px;
+  }
+
+  .directory-map-canvas {
+    min-height: 480px;
+  }
+
+  .directory-results[data-view='grid'] .directory-map {
+      display: none;
+    }
+
+    .directory-results[data-view='map'] .directory-grid {
+      display: none;
+    }
+
+    .directory-results[data-view='map'] .empty-state:not([hidden]) {
+      display: block;
+    }
+
 }
 @media (max-width: 760px) {
   :root { --side: 16px; }

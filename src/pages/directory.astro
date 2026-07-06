@@ -120,15 +120,27 @@ const onlineBookingCount = listings.filter((item) =>
       </div>
     </section>
 
-    <section class="wrapper">
-      <div class="results-head">
+      <section class="wrapper directory-results" data-directory-results>      <div class="results-head">
         <span data-results-count>
           Showing {listings.length} {listings.length === 1 ? 'result' : 'results'}
         </span>
 
-        <div class="toggle">
-          <span>Grid</span>
-          <span>Map</span>
+        <div class="directory-view-toggle" aria-label="Choose directory view">
+          <button
+            class="directory-view-button active"
+            type="button"
+            data-view-toggle="grid"
+          >
+            Grid
+          </button>
+
+          <button
+            class="directory-view-button"
+            type="button"
+            data-view-toggle="map"
+          >
+            Map
+          </button>
         </div>
       </div>
 
@@ -142,12 +154,23 @@ const onlineBookingCount = listings.filter((item) =>
               data-area={item.area}
               data-summary={item.summary}
               data-attributes={item.attributes.join(' ')}
+              data-lat={item.coordinates.lat}
+              data-lng={item.coordinates.lng}
+              data-href={`/listings/${item.slug}`}
             >
               <ListingCard item={item} variant="directory" />
             </article>
           ))
         }
       </div>
+      <section class="directory-map glass" data-directory-map hidden>
+        <div class="directory-map-copy">
+          <p>Map view</p>
+          <span>Showing visible listings from your current filters.</span>
+        </div>
+
+        <div class="directory-map-canvas" data-directory-map-canvas></div>
+      </section>
 
       <div class="empty-state glass" data-empty-state hidden>
         <h2>No matching listings yet.</h2>
@@ -194,83 +217,232 @@ const onlineBookingCount = listings.filter((item) =>
   </main>
 
   <script>
-    const params = new URLSearchParams(window.location.search)
+      import * as L from 'leaflet'
 
-    const qInput = document.querySelector('[data-filter-q]') as HTMLInputElement | null
-    const areaSelect = document.querySelector('[data-filter-area]') as HTMLSelectElement | null
-    const categorySelect = document.querySelector('[data-filter-category]') as HTMLSelectElement | null
-    const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-listing-card]'))
-    const countEl = document.querySelector('[data-results-count]')
-    const emptyState = document.querySelector<HTMLElement>('[data-empty-state]')
-    const filterChips = Array.from(
-      document.querySelectorAll<HTMLElement>('[data-filter-chip]')
-    )
-      
+      const params = new URLSearchParams(window.location.search)
 
-    const rawQuery = params.get('q')?.trim() ?? ''
-    const query = rawQuery.toLowerCase()
-    const area = params.get('area') ?? ''
-    const category = params.get('category') ?? ''
-    const verified = params.get('verified') === 'true'
-    const onlineBooking = params.get('onlineBooking') === 'true'
+      const qInput = document.querySelector('[data-filter-q]') as HTMLInputElement | null
+      const areaSelect = document.querySelector('[data-filter-area]') as HTMLSelectElement | null
+      const categorySelect = document.querySelector('[data-filter-category]') as HTMLSelectElement | null
+      const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-listing-card]'))
+      const countEl = document.querySelector('[data-results-count]')
+      const emptyState = document.querySelector<HTMLElement>('[data-empty-state]')
+      const results = document.querySelector<HTMLElement>('[data-directory-results]')
 
-    const hasAnyFilter = Boolean(query || area || category || verified || onlineBooking)
+      const grid = document.querySelector<HTMLElement>('[data-directory-grid]')
+      const mapPanel = document.querySelector<HTMLElement>('[data-directory-map]')
+      const mapCanvas = document.querySelector<HTMLElement>('[data-directory-map-canvas]')
+      const viewButtons = Array.from(
+        document.querySelectorAll<HTMLButtonElement>('[data-view-toggle]')
+      )
+      const filterChips = Array.from(
+        document.querySelectorAll<HTMLElement>('[data-filter-chip]')
+      )
 
-    filterChips.forEach((chip) => {
-      const chipType = chip.dataset.filterChip
+      const rawQuery = params.get('q')?.trim() ?? ''
+      const query = rawQuery.toLowerCase()
+      const area = params.get('area') ?? ''
+      const category = params.get('category') ?? ''
+      const verified = params.get('verified') === 'true'
+      const onlineBooking = params.get('onlineBooking') === 'true'
+      const initialView = params.get('view') === 'map' ? 'map' : 'grid'
 
-      const isActive =
-        (chipType === 'all' && !hasAnyFilter) ||
-        (chipType === 'verified' && verified) ||
-        (chipType === 'onlineBooking' && onlineBooking)
+      if (qInput) qInput.value = rawQuery
+      if (areaSelect) areaSelect.value = area
+      if (categorySelect) categorySelect.value = category
 
-      chip.classList.toggle('active', isActive)
-    })
+      const hasAnyFilter = Boolean(query || area || category || verified || onlineBooking)
 
-    if (qInput) qInput.value = rawQuery
-    if (areaSelect) areaSelect.value = area
-    if (categorySelect) categorySelect.value = category
+      filterChips.forEach((chip) => {
+        const chipType = chip.dataset.filterChip
 
-    let visibleCount = 0
+        const isActive =
+          (chipType === 'all' && !hasAnyFilter) ||
+          (chipType === 'verified' && verified) ||
+          (chipType === 'onlineBooking' && onlineBooking)
 
-    cards.forEach((card) => {
-      const haystack = [
-        card.dataset.name,
-        card.dataset.category,
-        card.dataset.area,
-        card.dataset.summary,
-        card.dataset.attributes,
-      ]
-        .join(' ')
-        .toLowerCase()
+        chip.classList.toggle('active', isActive)
+      })
 
-      const matchesQuery = !query || haystack.includes(query)
-      const matchesArea = !area || card.dataset.area === area
-      const matchesCategory = !category || card.dataset.category === category
-      const matchesVerified = !verified
-      const matchesOnlineBooking =
-        !onlineBooking || card.dataset.attributes?.includes('Online Booking')
+      const escapeHTML = (value = '') =>
+        value.replace(/[&<>"']/g, (char) => {
+          const entities: Record<string, string> = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;',
+          }
 
-      const isVisible =
-        matchesQuery &&
-        matchesArea &&
-        matchesCategory &&
-        matchesVerified &&
-        matchesOnlineBooking
+          return entities[char]
+        })
 
-      card.hidden = !isVisible
+      let visibleCount = 0
+      let map: L.Map | null = null
+      let markerLayer: L.LayerGroup | null = null
 
-      if (isVisible) visibleCount += 1
-    })
+      const visibleListings = cards
+        .map((card) => {
+          const haystack = [
+            card.dataset.name,
+            card.dataset.category,
+            card.dataset.area,
+            card.dataset.summary,
+            card.dataset.attributes,
+          ]
+            .join(' ')
+            .toLowerCase()
 
-    if (countEl) {
-      countEl.textContent = `Showing ${visibleCount} ${
-        visibleCount === 1 ? 'result' : 'results'
-      }`
-    }
+          const matchesQuery = !query || haystack.includes(query)
+          const matchesArea = !area || card.dataset.area === area
+          const matchesCategory = !category || card.dataset.category === category
+          const matchesVerified = !verified
+          const matchesOnlineBooking =
+            !onlineBooking || card.dataset.attributes?.includes('Online Booking')
 
-    if (emptyState) {
-      emptyState.hidden = visibleCount > 0
-    }
-  </script>
+          const isVisible =
+            matchesQuery &&
+            matchesArea &&
+            matchesCategory &&
+            matchesVerified &&
+            matchesOnlineBooking
+
+          card.hidden = !isVisible
+
+          if (isVisible) visibleCount += 1
+
+          return {
+            element: card,
+            isVisible,
+            name: card.dataset.name ?? '',
+            category: card.dataset.category ?? '',
+            area: card.dataset.area ?? '',
+            href: card.dataset.href ?? '#',
+            lat: Number(card.dataset.lat),
+            lng: Number(card.dataset.lng),
+          }
+        })
+        .filter((listing) => listing.isVisible)
+
+      if (countEl) {
+        countEl.textContent = `Showing ${visibleCount} ${
+          visibleCount === 1 ? 'result' : 'results'
+        }`
+      }
+
+      if (emptyState) {
+        emptyState.hidden = visibleCount > 0
+      }
+
+      const initMap = () => {
+        if (!mapCanvas || map) return
+
+        map = L.map(mapCanvas, {
+          scrollWheelZoom: false,
+        }).setView([50.82, -119.22], 9)
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; OpenStreetMap contributors',
+        }).addTo(map)
+
+        markerLayer = L.layerGroup().addTo(map)
+      }
+
+      const updateMapMarkers = () => {
+        if (!map || !markerLayer) return
+
+        markerLayer.clearLayers()
+
+        const bounds: L.LatLngExpression[] = []
+
+        visibleListings.forEach((listing) => {
+          if (!Number.isFinite(listing.lat) || !Number.isFinite(listing.lng)) return
+
+          const marker = L.circleMarker([listing.lat, listing.lng], {
+            radius: 9,
+            color: '#f8ad39',
+            fillColor: '#f8ad39',
+            fillOpacity: 0.95,
+            weight: 2,
+          })
+
+          marker.bindPopup(`
+            <strong>${escapeHTML(listing.name)}</strong><br />
+            <span>${escapeHTML(listing.area)}</span><br />
+            <span>${escapeHTML(listing.category)}</span><br />
+            <a href="${escapeHTML(listing.href)}">View listing</a>
+          `)
+
+          marker.addTo(markerLayer!)
+          bounds.push([listing.lat, listing.lng])
+        })
+
+        if (bounds.length > 1) {
+          map.fitBounds(bounds, {
+            padding: [42, 42],
+            maxZoom: 11,
+          })
+        }
+
+        if (bounds.length === 1) {
+          map.setView(bounds[0], 12)
+        }
+
+        window.setTimeout(() => {
+          map?.invalidateSize()
+        }, 50)
+      }
+
+      const setView = (view: 'grid' | 'map') => {
+        const isMap = view === 'map'
+
+        results?.setAttribute('data-view', view)
+
+        if (grid) {
+          grid.hidden = isMap
+          grid.setAttribute('aria-hidden', String(isMap))
+        }
+
+        if (mapPanel) {
+          mapPanel.hidden = !isMap
+          mapPanel.setAttribute('aria-hidden', String(!isMap))
+        }
+
+        viewButtons.forEach((button) => {
+          const isActive = button.dataset.viewToggle === view
+
+          button.classList.toggle('active', isActive)
+          button.setAttribute('aria-pressed', String(isActive))
+        })
+
+        const nextUrl = new URL(window.location.href)
+
+        if (isMap) {
+          nextUrl.searchParams.set('view', 'map')
+        } else {
+          nextUrl.searchParams.delete('view')
+        }
+
+        window.history.replaceState({}, '', nextUrl)
+
+        if (isMap) {
+          initMap()
+          updateMapMarkers()
+
+          window.setTimeout(() => {
+            map?.invalidateSize()
+          }, 100)
+        }
+      }
+
+      viewButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const view = button.dataset.viewToggle === 'map' ? 'map' : 'grid'
+          setView(view)
+        })
+      })
+
+      setView(initialView)
+    </script>
 </BaseLayout>
