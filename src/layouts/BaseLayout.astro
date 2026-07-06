@@ -1,28 +1,45 @@
 ---
 import '../styles/global.css'
 
+import IconSprite from '../components/IconSprite.astro'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+
 type Props = {
   title?: string
   description?: string
+  bodyClass?: string
+  headerOverlay?: boolean
+  showHeader?: boolean
+  showFooter?: boolean
 }
 
 const {
   title = 'Shuswap Commons',
   description = 'A curated local directory and community commons for the Shuswap.',
+  bodyClass = '',
+  headerOverlay = true,
+  showHeader = true,
+  showFooter = true,
 } = Astro.props
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
   </head>
-  <body>
-    <div class="page">
-      <slot />
-    </div>
+
+  <body class={bodyClass}>
+    <IconSprite />
+
+    {showHeader && <Header overlay={headerOverlay} />}
+
+    <slot />
+
+    {showFooter && <Footer />}
   </body>
-</html>
+</html> 

@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { ROUTES } from '../data/siteRoutes'
+---
+
+<BaseLayout
+  title="About | Shuswap Commons"
+  description="Learn what Shuswap Commons is, why it exists, and how it helps people find current local information."
+>
+  <main>
+    <section class="page-hero page-hero--compact">
+      <div class="wrapper">
+        <div class="breadcrumbs">
+          <a href={ROUTES.home}>Home</a>
+          <span>›</span>
+          <span>About</span>
+        </div>
+
+        <h1>Built for clearer local discovery.</h1>
+
+        <p>
+          Shuswap Commons is a curated local directory for finding businesses,
+          services, makers, recreation, stays, and community resources across
+          the Shuswap.
+        </p>
+      </div>
+    </section>
+
+    <section class="wrapper content-section about-grid">
+      <article id="mission" class="content-panel glass">
+        <p class="kicker">Our mission</p>
+
+        <h2>Make useful local information easier to find.</h2>
+
+        <p>
+          Local information often gets scattered across aging directories,
+          social feeds, tourism pages, and business websites. Shuswap Commons
+          brings the useful pieces together in a cleaner, more current format.
+        </p>
+      </article>
+
+      <article id="how-it-works" class="content-panel glass">
+        <p class="kicker">How it works</p>
+
+        <h2>Curated first, automated later.</h2>
+
+        <p>
+          Listings are organized by category, area, freshness signals, and
+          practical details. The first version uses carefully structured mock
+          data while the frontend is refined before Sanity CMS is connected.
+        </p>
+      </article>
+
+      <article id="community-updates" class="content-panel glass">
+        <p class="kicker">Community updates</p>
+
+        <h2>A future home for local notices.</h2>
+
+        <p>
+          The directory can later support community updates, seasonal resources,
+          events, volunteer needs, local notices, and practical information for
+          residents and visitors.
+        </p>
+      </article>
+
+      <article id="resources" class="content-panel glass">
+        <p class="kicker">Resources</p>
+
+        <h2>For residents, visitors, and businesses.</h2>
+
+        <p>
+          This project is designed to support people looking for reliable local
+          services while also giving businesses a clearer place to be found and
+          kept up to date.
+        </p>
+      </article>
+    </section>
+
+    <section id="contact" class="wrapper cta">
+      <div>
+        <h2>Have something to add?</h2>
+
+        <p>
+          Send a business, correction, or useful local resource through the
+          submission page.
+        </p>
+      </div>
+
+      <div class="cta-actions">
+        <a class="btn amber" href={ROUTES.submit}>
+          Submit an Update
+
+          <svg class="icon" aria-hidden="true">
+            <use href="#i-arrow" />
+          </svg>
+        </a>
+
+        <a class="btn" href={ROUTES.directory}>
+          Browse Directory
+
+          <svg class="icon" aria-hidden="true">
+            <use href="#i-arrow" />
+          </svg>
+        </a>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

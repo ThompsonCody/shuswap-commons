@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { ROUTES } from '../data/siteRoutes'
+import { categories } from '../data/categories'
+---
+
+<BaseLayout
+  title="Submit a Listing | Shuswap Commons"
+  description="Add a business, suggest an edit, or claim a listing on Shuswap Commons."
+>
+  <main>
+    <section class="page-hero page-hero--compact">
+      <div class="wrapper">
+        <div class="breadcrumbs">
+          <a href={ROUTES.home}>Home</a>
+          <span>›</span>
+          <span>Submit</span>
+        </div>
+
+        <h1>Add or update a listing.</h1>
+
+        <p>
+          Help keep the Shuswap Commons current. Submit a local business,
+          suggest a correction, or claim an existing listing.
+        </p>
+      </div>
+    </section>
+
+    <section class="wrapper submit-layout">
+      <form class="submit-form glass" name="submit-listing" method="POST" data-netlify="true">
+        <input type="hidden" name="form-name" value="submit-listing" />
+
+        <div class="section-title">
+          <h2>Listing details</h2>
+          <p>Start with the practical information people need most.</p>
+        </div>
+
+        <div class="form-grid">
+          <label class="form-field">
+            <span>Submission type</span>
+            <select name="submission_type">
+              <option>Add a new business</option>
+              <option>Suggest an edit</option>
+              <option>Claim this listing</option>
+              <option>Share a community resource</option>
+            </select>
+          </label>
+
+          <label class="form-field">
+            <span>Business or organization name</span>
+            <input name="business_name" type="text" placeholder="Example: Maple Street Diner" />
+          </label>
+
+          <label class="form-field">
+            <span>Category</span>
+            <select name="category">
+                {
+                    categories.map((category) => (
+                    <option value={category.name}>{category.name}</option>
+                    ))
+                }
+            </select>
+          </label>
+
+          <label class="form-field">
+            <span>Area</span>
+            <input name="area" type="text" placeholder="Salmon Arm, Sicamous, Blind Bay..." />
+          </label>
+
+          <label class="form-field">
+            <span>Website</span>
+            <input name="website" type="url" placeholder="https://example.ca" />
+          </label>
+
+          <label class="form-field">
+            <span>Phone or email</span>
+            <input name="contact" type="text" placeholder="Phone number or email address" />
+          </label>
+
+          <label class="form-field full">
+            <span>What should be added or changed?</span>
+            <textarea name="message" rows="6" placeholder="Tell us what information should be added, corrected, or verified."></textarea>
+          </label>
+
+          <label class="form-field">
+            <span>Your name</span>
+            <input name="your_name" type="text" />
+          </label>
+
+          <label class="form-field">
+            <span>Your email</span>
+            <input name="your_email" type="email" />
+          </label>
+        </div>
+
+        <button class="btn amber submit-button" type="submit">
+          Send Submission
+
+          <svg class="icon" aria-hidden="true">
+            <use href="#i-arrow" />
+          </svg>
+        </button>
+      </form>
+
+      <aside class="submit-side">
+        <article id="why-get-listed" class="content-panel glass">
+          <p class="kicker">Why get listed</p>
+
+          <h2>Be easier to find locally.</h2>
+
+          <p>
+            Shuswap Commons is built around practical discovery: area,
+            category, current details, and local trust signals.
+          </p>
+        </article>
+
+        <article id="guidelines" class="content-panel glass">
+          <p class="kicker">Guidelines</p>
+
+          <h2>Useful, current, local.</h2>
+
+          <p>
+            The best listings include accurate contact information, a clear
+            service area, useful business details, and any seasonal notes people
+            should know before visiting or calling.
+          </p>
+        </article>
+      </aside>
+    </section>
+  </main>
+</BaseLayout>

@@ -1,0 +1,157 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import ListingCard from '../../components/ListingCard.astro'
+
+import { categories } from '../../data/categories'
+import { listings } from '../../data/mockListings'
+import { ROUTES, getCategoryHref, getSubmitHref } from '../../data/siteRoutes'
+
+const categoryCards = categories.map((category) => {
+  const categoryListings = listings.filter((listing) => listing.category === category.name)
+
+  return {
+    ...category,
+    count: categoryListings.length,
+    href: getCategoryHref(category.name),
+    examples: categoryListings.slice(0, 2),
+  }
+})
+
+const featuredListings = listings.slice(0, 4)
+---
+
+<BaseLayout
+  title="Categories | Shuswap Commons"
+  description="Browse Shuswap Commons by business category, from food and trades to recreation, wellness, local makers, and community resources."
+>
+  <main>
+    <section class="page-hero page-hero--compact">
+      <div class="wrapper">
+        <div class="breadcrumbs">
+          <a href={ROUTES.home}>Home</a>
+          <span>›</span>
+          <span>Categories</span>
+        </div>
+
+        <h1>Browse by Category</h1>
+
+        <p>
+          Start with what you need, then narrow into local businesses,
+          services, makers, places to stay, and community resources across the
+          Shuswap.
+        </p>
+      </div>
+    </section>
+
+    <section class="wrapper content-section">
+      <div class="section-row">
+        <div class="section-title">
+          <h2>Find the right kind of local help</h2>
+          <p>Each category leads directly into filtered directory results.</p>
+        </div>
+
+        <a class="link-arrow amber" href={ROUTES.directory}>
+          Browse all businesses
+
+          <svg class="icon" aria-hidden="true">
+            <use href="#i-arrow" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="category-page-grid">
+        {
+          categoryCards.map((category) => (
+            <a
+              class:list={[
+                'category-page-card',
+                'glass',
+                category.tone ? `is-${category.tone}` : '',
+              ]}
+              href={category.href}
+            >
+              <div class="category-page-card__icon">
+                <svg class="icon" aria-hidden="true">
+                  <use href={`#${category.icon}`} />
+                </svg>
+              </div>
+
+              <div>
+                <h3>{category.name}</h3>
+                <p>{category.summary}</p>
+
+                <div class="category-page-card__meta">
+                  <span>
+                    {category.count} {category.count === 1 ? 'listing' : 'listings'}
+                  </span>
+
+                  {
+                    category.examples.length > 0 && (
+                      <small>
+                        Includes {category.examples.map((item) => item.name).join(', ')}
+                      </small>
+                    )
+                  }
+                </div>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="wrapper content-section">
+      <div class="section-row">
+        <div class="section-title">
+          <h2>Recently verified businesses</h2>
+          <p>A quick look at current listings across multiple categories.</p>
+        </div>
+
+        <a class="link-arrow amber" href={ROUTES.recentlyVerified}>
+          View verified listings
+
+          <svg class="icon" aria-hidden="true">
+            <use href="#i-arrow" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="listing-grid">
+        {
+          featuredListings.map((item) => (
+            <ListingCard item={item} variant="directory" />
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="wrapper cta">
+      <div>
+        <h2>Missing a category or local resource?</h2>
+
+        <p>
+          Suggest a business, correction, or useful community resource so the
+          directory stays practical and current.
+        </p>
+      </div>
+
+      <div class="cta-actions">
+        <a class="btn amber" href={getSubmitHref('add')}>
+          Add Your Business
+
+          <svg class="icon" aria-hidden="true">
+            <use href="#i-arrow" />
+          </svg>
+        </a>
+
+        <a class="btn" href={getSubmitHref('edit')}>
+          Suggest an Edit
+
+          <svg class="icon" aria-hidden="true">
+            <use href="#i-arrow" />
+          </svg>
+        </a>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

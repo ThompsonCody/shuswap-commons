@@ -1,0 +1,34 @@
+---
+import ListingCard from '../ListingCard.astro'
+
+type Props = {
+  listings: any[]
+}
+
+const { listings } = Astro.props
+---
+
+<section class="wrapper home-section recently-verified">
+  <div class="section-row">
+    <div class="section-title">
+      <h2>Recently Verified</h2>
+      <p>Fresh info you can count on.</p>
+    </div>
+
+    <a class="link-arrow amber" href="/directory">
+      View all listings
+
+      <svg class="icon" aria-hidden="true">
+        <use href="#i-arrow" />
+      </svg>
+    </a>
+  </div>
+
+  <div class="listing-grid verified-grid">
+    {
+      listings.slice(0, 4).map((item) => (
+        <ListingCard item={item} variant="home" />
+      ))
+    }
+  </div>
+</section>

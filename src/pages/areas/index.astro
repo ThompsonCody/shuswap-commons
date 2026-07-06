@@ -1,0 +1,137 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import ListingCard from '../../components/ListingCard.astro'
+import { listings, areas } from '../../data/mockListings'
+import { ROUTES, getAreaHref, getSubmitHref } from '../../data/siteRoutes'
+
+
+const areaSummaries: Record<string, string> = {
+  Anglemont: 'North Shuswap lake access, quiet stays, local services, and community essentials.',
+  'Scotch Creek': 'A practical North Shuswap hub for food, shops, repairs, and everyday stops.',
+  Celista: 'Rural lake-country community with local makers, services, and recreation nearby.',
+  'Lee Creek': 'Gateway to trails, water access, camping, and quieter Shuswap living.',
+  'Blind Bay': 'Lakefront homes, trades, dining, local services, and easy regional access.',
+  Sorrento: 'A central South Shuswap community with shops, services, and lake-country character.',
+  'Salmon Arm': 'The largest service hub in the Shuswap, with food, business, health, culture, and events.',
+  Sicamous: 'A recreation-focused lake town known for boating, paddling, stays, and seasonal tourism.',
+}
+
+const areaCards = areas.map((area) => {
+  const count = listings.filter((listing) => listing.area === area).length
+
+  return {
+    name: area,
+    count,
+    summary: areaSummaries[area] ?? 'Local businesses, services, and community resources in the Shuswap.',
+    href: getAreaHref(area),
+  }
+})
+---
+
+<BaseLayout
+  title="Areas | Shuswap Commons"
+  description="Explore Shuswap communities and browse local businesses by area."
+>
+  <main>
+    <section class="page-hero page-hero--compact">
+      <div class="wrapper">
+        <div class="breadcrumbs">
+          <a href={ROUTES.home}>Home</a>
+          <span>›</span>
+          <span>Areas</span>
+        </div>
+
+        <h1>Explore by Area</h1>
+
+        <p>
+          Browse Shuswap communities, find local businesses nearby, and discover
+          practical resources across the region.
+        </p>
+      </div>
+    </section>
+
+    <section class="wrapper content-section">
+      <div class="section-row">
+        <div class="section-title">
+          <h2>Shuswap communities</h2>
+          <p>Start with a place, then narrow into businesses and services.</p>
+        </div>
+
+        <a class="link-arrow amber" href={ROUTES.directory}>
+          Browse all businesses
+
+          <svg class="icon" aria-hidden="true">
+            <use href="#i-arrow" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="area-page-grid">
+        {
+          areaCards.map((area) => (
+            <a class="area-page-card glass" href={area.href}>
+              <img src="/images/area-lake.jpg" alt={`${area.name} area`} />
+
+              <div>
+                <h3>{area.name}</h3>
+
+                <p>{area.summary}</p>
+
+                <span>
+                  {area.count} {area.count === 1 ? 'listing' : 'listings'}
+                </span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="wrapper content-section">
+      <div class="section-row">
+        <div class="section-title">
+          <h2>Recently verified across the Shuswap</h2>
+          <p>Fresh listings from different communities.</p>
+        </div>
+
+        <a class="link-arrow amber" href={ROUTES.recentlyVerified}>
+          View verified listings
+
+          <svg class="icon" aria-hidden="true">
+            <use href="#i-arrow" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="listing-grid">
+        {
+          listings.slice(0, 4).map((item) => (
+            <ListingCard item={item} variant="directory" />
+          ))
+        }
+      </div>
+    </section>
+      <section class="wrapper cta">
+    <div>
+      <h2>Help keep the Shuswap Commons current.</h2>
+      <p>Know a great local business we should feature? Or see something that needs an update?</p>
+    </div>
+
+    <div class="cta-actions">
+      <a class="btn amber" href={getSubmitHref('add')}>
+        Add Your Business
+        <svg class="icon" aria-hidden="true">
+          <use href="#i-arrow" />
+        </svg>
+      </a>
+
+      <a class="btn" href={getSubmitHref('edit')}>
+        Suggest an Edit
+        <svg class="icon" aria-hidden="true">
+          <use href="#i-arrow" />
+        </svg>
+      </a>
+    </div>
+  </section>
+  </main>
+</BaseLayout>

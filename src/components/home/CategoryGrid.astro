@@ -1,0 +1,32 @@
+---
+import type { Category } from '../../data/categories'
+import { getCategoryHref } from '../../data/siteRoutes'
+
+type Props = {
+  categories: readonly Category[]
+}
+
+const { categories } = Astro.props
+---
+
+<section class="wrapper categories" aria-label="Browse by category">
+  {
+    categories.map((category) => (
+      <a
+        class:list={[
+          'category-card',
+          'glass',
+          category.tone ? `is-${category.tone}` : '',
+        ]}
+        href={getCategoryHref(category.name)}
+      >
+        <svg class="icon cat-icon" aria-hidden="true">
+          <use href={`#${category.icon}`} />
+        </svg>
+
+        <strong>{category.name}</strong>
+        <span>{category.sub}</span>
+      </a>
+    ))
+  }
+</section>

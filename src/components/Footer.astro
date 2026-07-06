@@ -1,64 +1,80 @@
 ---
-import { Mail, ArrowRight } from '@lucide/astro'
+import { ROUTES } from '../data/siteRoutes'
 ---
 
 <footer class="footer">
-  <div class="footer__inner container">
+  <div class="wrapper footer-grid">
     <div>
-      <a class="footer__logo" href="/">
+      <a class="footer-logo" href={ROUTES.home} aria-label="Shuswap Commons home">
         <span>Shuswap</span>
         <span>Commons</span>
       </a>
+
       <p>
-        A local directory and community commons for the Shuswap. Built for residents,
-        visitors, and the businesses that make this place great.
+        A local directory and community commons for the Shuswap. Built for
+        residents, visitors, and the businesses that make this place great.
       </p>
-        <div class="socials">
-            <a href="/" aria-label="Facebook">f</a>
-            <a href="/" aria-label="Instagram">◎</a>
-            <a href="/" aria-label="Email"><Mail size={20} /></a>
-        </div>
+
+      <div class="socials" aria-label="Social links">
+        <span>f</span>
+        <span>◎</span>
+        <span>
+          <svg class="icon" aria-hidden="true">
+            <use href="#i-mail" />
+          </svg>
+        </span>
+      </div>
     </div>
 
-    <div class="footer__col">
+    <nav class="footer-col" aria-label="Explore">
       <strong>Explore</strong>
-      <a href="/directory">Directory</a>
-      <a href="/directory">Areas</a>
-      <a href="/directory">Categories</a>
-      <a href="/directory">Recently Verified</a>
-      <a href="/">Community Updates</a>
-    </div>
+      <a href={ROUTES.directory}>Directory</a>
+      <a href={ROUTES.areas}>Areas</a>
+      <a href={ROUTES.categories}>Categories</a>
+      <a href={ROUTES.recentlyVerified}>Recently Verified</a>
+      <a href={ROUTES.communityUpdates}>Community Updates</a>
+    </nav>
 
-    <div class="footer__col">
+    <nav class="footer-col" aria-label="About">
       <strong>About</strong>
-      <a href="/">About Us</a>
-      <a href="/">Our Mission</a>
-      <a href="/">How It Works</a>
-      <a href="/">Contact</a>
-    </div>
+      <a href={ROUTES.about}>About Us</a>
+      <a href={ROUTES.mission}>Our Mission</a>
+      <a href={ROUTES.howItWorks}>How It Works</a>
+      <a href={ROUTES.contact}>Contact</a>
+    </nav>
 
-    <div class="footer__col">
+    <nav class="footer-col" aria-label="For Businesses">
       <strong>For Businesses</strong>
-      <a href="/">Add or Update Listing</a>
-      <a href="/">Business Guidelines</a>
-      <a href="/">Why Get Listed</a>
-      <a href="/">Resources</a>
-    </div>
+      <a href={ROUTES.submit}>Add or Update Listing</a>
+      <a href={ROUTES.businessGuidelines}>Business Guidelines</a>
+      <a href={ROUTES.whyGetListed}>Why Get Listed</a>
+      <a href={ROUTES.resources}>Resources</a>
+    </nav>
 
-    <div class="footer__col footer__newsletter">
+    <div>
       <strong>Stay in the Loop</strong>
-      <p>Get updates on new listings, community news, and events.</p>
-      <form>
-        <input placeholder="Your email address" />
-        <button aria-label="Subscribe">
-          <ArrowRight size={20} />
+
+      <p>
+        Get updates on new listings, community news, and events.
+      </p>
+
+      <form class="newsletter">
+        <label class="sr-only" for="footer-email">Email address</label>
+
+        <input id="footer-email" type="email" placeholder="Your email address" />
+
+        <button type="submit" aria-label="Submit email">
+          <svg class="icon" aria-hidden="true">
+            <use href="#i-arrow" />
+          </svg>
         </button>
       </form>
     </div>
   </div>
 
-  <div class="footer__bottom container">
-    <span>© 2026 Shuswap Commons. All rights reserved.</span>
+  <div class="wrapper footer-bottom">
+    <p>© 2026 Shuswap Commons. All rights reserved.</p>
+
     <div>
       <a href="/">Privacy</a>
       <a href="/">Terms</a>
@@ -66,120 +82,3 @@ import { Mail, ArrowRight } from '@lucide/astro'
     </div>
   </div>
 </footer>
-
-<style>
-  .footer {
-    padding: 48px 0 34px;
-    background: rgba(3, 10, 11, 0.7);
-  }
-
-  .footer__inner {
-    display: grid;
-    grid-template-columns: 1.5fr repeat(3, 0.8fr) 1.35fr;
-    gap: 54px;
-  }
-
-  .footer__logo {
-    display: grid;
-    margin-bottom: 12px;
-    color: var(--text);
-    font-size: 1.55rem;
-    font-weight: 900;
-    letter-spacing: -0.08em;
-    line-height: 0.82;
-    text-decoration: none;
-  }
-
-  .footer p {
-    max-width: 250px;
-    margin: 0;
-    color: var(--muted);
-    line-height: 1.4;
-  }
-
-  .footer__col {
-    display: flex;
-    flex-direction: column;
-    gap: 9px;
-  }
-
-  .footer strong {
-    margin-bottom: 4px;
-  }
-
-  .footer a {
-    color: var(--muted);
-    text-decoration: none;
-  }
-
-    .socials {
-    display: flex;
-    gap: 12px;
-    margin-top: 22px;
-    }
-
-    .socials a {
-    display: grid;
-    width: 32px;
-    height: 32px;
-    place-items: center;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    color: var(--text);
-    font-weight: 800;
-    text-decoration: none;
-    }
-
-  form {
-    display: grid;
-    grid-template-columns: 1fr 52px;
-    margin-top: 18px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    background: rgba(255,255,255,0.05);
-  }
-
-  input {
-    min-height: 54px;
-    border: 0;
-    padding: 0 16px;
-    background: transparent;
-    color: var(--text);
-  }
-
-  button {
-    border: 0;
-    background: var(--text);
-    color: var(--dark);
-  }
-
-  .footer__bottom {
-    display: flex;
-    justify-content: space-between;
-    gap: 24px;
-    margin-top: 44px;
-    padding-top: 28px;
-    border-top: 1px solid var(--border);
-    color: var(--faint);
-  }
-
-  .footer__bottom div {
-    display: flex;
-    gap: 34px;
-  }
-
-  @media (max-width: 1000px) {
-    .footer__inner {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .footer__inner,
-    .footer__bottom {
-      grid-template-columns: 1fr;
-      flex-direction: column;
-    }
-  }
-</style>
