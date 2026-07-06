@@ -1,5 +1,5 @@
 ---
-import { ROUTES, getSubmitHref } from '../data/siteRoutes'
+import { ROUTES } from '../data/siteRoutes'
 
 type Props = {
   overlay?: boolean
@@ -42,12 +42,6 @@ const { overlay = true } = Astro.props
           <use href="#i-plus" />
         </svg>
         Add or Update
-      </a>
-
-      <a class="user-btn" href={getSubmitHref('claim')} aria-label="Claim or update a listing">
-        <svg class="icon" aria-hidden="true">
-          <use href="#i-user" />
-        </svg>
       </a>
     </div>
 

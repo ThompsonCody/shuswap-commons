@@ -1,67 +1,276 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import ListingCard from '../components/ListingCard.astro'
-import { listings } from '../data/mockListings'
-import { getSubmitHref } from '../data/siteRoutes'
+import { categories } from '../data/categories'
+import { listings, areas } from '../data/mockListings'
+import { ROUTES, getSubmitHref } from '../data/siteRoutes'
+
+const verifiedCount = listings.length
+const onlineBookingCount = listings.filter((item) =>
+  item.attributes.includes('Online Booking')
+).length
 ---
+
 <BaseLayout
   title="Browse Businesses | Shuswap Commons"
   description="Browse trusted local businesses, services, and organizations across the Shuswap."
 >
+  <main>
+    <section class="page-hero">
+      <div class="wrapper">
+        <div class="breadcrumbs">
+          <a href="/">Home</a>
+          <span>›</span>
+          <span>Directory</span>
+        </div>
 
-<main>
-  <section class="page-hero">
-    <div class="wrapper">
-      <div class="breadcrumbs"><a href="/">Home</a><span>›</span><span>Directory</span></div>
-      <h1>Browse Businesses</h1>
-      <p>Discover trusted local businesses, services, and organizations across the Shuswap. Support local, shop local, and keep our communities thriving.</p>
-    </div>
-  </section>
-  <section class="wrapper filter-panel glass">
-    <div class="filter-row">
-      <div class="fake-input"><svg class="icon"><use href="#i-search"/></svg>Search businesses, services, or keywords...</div>
-      <div class="fake-select"><svg class="icon"><use href="#i-pin"/></svg>Any Area <svg class="icon"><use href="#i-chevron"/></svg></div>
-      <div class="fake-select">All Categories <svg class="icon"><use href="#i-chevron"/></svg></div>
-      <div class="fake-select">More Filters</div>
-      <div class="fake-select">Sort: Recommended <svg class="icon"><use href="#i-chevron"/></svg></div>
-    </div>
-    <div class="filter-chips">
-      <span class="chip active">All Results <strong>128</strong></span><span class="chip">Verified <strong>96</strong></span><span class="chip">Open Now <strong>42</strong></span><span class="chip">Offers Online Booking <strong>28</strong></span>
-      <a class="clear-filter" href="/directory">Clear all filters</a>
-    </div>
-  </section>
-  <section class="wrapper">
-    <div class="results-head"><span>Showing 1–12 of 128 results</span><div class="toggle"><span>Grid</span><span>Map</span></div></div>
-    <div class="directory-grid">
-      {
-        listings.map((item) => (
-          <ListingCard item={item} variant="directory" />
-        ))
-      }
-    </div> 
-  </section>
-  <section class="wrapper cta">
-    <div>
-      <h2>Help keep the Shuswap Commons current.</h2>
-      <p>Know a great local business we should feature? Or see something that needs an update?</p>
-    </div>
+        <h1>Browse Businesses</h1>
 
-    <div class="cta-actions">
-      <a class="btn amber" href={getSubmitHref('add')}>
-        Add Your Business
-        <svg class="icon" aria-hidden="true">
-          <use href="#i-arrow" />
-        </svg>
-      </a>
+        <p>
+          Discover trusted local businesses, services, and organizations across the
+          Shuswap. Support local, shop local, and keep our communities thriving.
+        </p>
+      </div>
+    </section>
 
-      <a class="btn" href={getSubmitHref('edit')}>
-        Suggest an Edit
-        <svg class="icon" aria-hidden="true">
-          <use href="#i-arrow" />
-        </svg>
-      </a>
-    </div>
-  </section>
-</main>
+    <section class="wrapper directory-filters glass" data-directory-filters>
+      <form class="directory-filter-form" action={ROUTES.directory} method="get">
+        <label class="directory-filter-field directory-filter-field--search">
+          <svg class="icon" aria-hidden="true">
+            <use href="#i-search" />
+          </svg>
 
+          <span class="sr-only">Search businesses, services, or keywords</span>
+
+          <input
+            data-filter-q
+            type="search"
+            name="q"
+            placeholder="Search businesses, services, or keywords..."
+          />
+        </label>
+
+        <label class="directory-filter-field directory-filter-field--area">
+          <svg class="icon" aria-hidden="true">
+            <use href="#i-pin" />
+          </svg>
+
+          <span class="sr-only">Choose an area</span>
+
+          <select data-filter-area name="area">
+            <option value="">Any Area</option>
+            {areas.map((area) => <option value={area}>{area}</option>)}
+          </select>
+
+          <svg class="icon" aria-hidden="true">
+            <use href="#i-chevron" />
+          </svg>
+        </label>
+
+        <label class="directory-filter-field directory-filter-field--category">
+          <span class="sr-only">Choose a category</span>
+
+          <select data-filter-category name="category">
+            <option value="">All Categories</option>
+            {
+              categories.map((category) => (
+                <option value={category.name}>{category.name}</option>
+              ))
+            }
+          </select>
+
+          <svg class="icon" aria-hidden="true">
+            <use href="#i-chevron" />
+          </svg>
+        </label>
+
+        <button class="directory-filter-submit" type="submit">
+          Apply Filters
+        </button>
+      </form>
+
+      <div class="directory-filter-chips">
+        <a
+          class="directory-filter-chip"
+          data-filter-chip="all"
+          href={ROUTES.directory}
+        >
+          All Results <strong>{listings.length}</strong>
+        </a>
+
+        <a
+          class="directory-filter-chip"
+          data-filter-chip="verified"
+          href={`${ROUTES.directory}?verified=true`}
+        >
+          Verified <strong>{verifiedCount}</strong>
+        </a>
+
+        <a
+          class="directory-filter-chip"
+          data-filter-chip="onlineBooking"
+          href={`${ROUTES.directory}?onlineBooking=true`}
+        >
+          Offers Online Booking <strong>{onlineBookingCount}</strong>
+        </a>
+
+        <a class="directory-filter-clear" href={ROUTES.directory}>
+          Clear all filters
+        </a>
+      </div>
+    </section>
+
+    <section class="wrapper">
+      <div class="results-head">
+        <span data-results-count>
+          Showing {listings.length} {listings.length === 1 ? 'result' : 'results'}
+        </span>
+
+        <div class="toggle">
+          <span>Grid</span>
+          <span>Map</span>
+        </div>
+      </div>
+
+      <div class="directory-grid" data-directory-grid>
+        {
+          listings.map((item) => (
+            <article
+              data-listing-card
+              data-name={item.name}
+              data-category={item.category}
+              data-area={item.area}
+              data-summary={item.summary}
+              data-attributes={item.attributes.join(' ')}
+            >
+              <ListingCard item={item} variant="directory" />
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="empty-state glass" data-empty-state hidden>
+        <h2>No matching listings yet.</h2>
+
+        <p>
+          Try clearing your filters, searching a broader term, or suggesting a
+          business we should add.
+        </p>
+
+        <a class="btn amber" href={getSubmitHref('add')}>
+          Suggest a Listing
+        </a>
+      </div>
+    </section>
+
+    <section class="wrapper cta">
+      <div>
+        <h2>Help keep the Shuswap Commons current.</h2>
+
+        <p>
+          Know a great local business we should feature? Or see something that
+          needs an update?
+        </p>
+      </div>
+
+      <div class="cta-actions">
+        <a class="btn amber" href={getSubmitHref('add')}>
+          Add Your Business
+
+          <svg class="icon" aria-hidden="true">
+            <use href="#i-arrow" />
+          </svg>
+        </a>
+
+        <a class="btn" href={getSubmitHref('edit')}>
+          Suggest an Edit
+
+          <svg class="icon" aria-hidden="true">
+            <use href="#i-arrow" />
+          </svg>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search)
+
+    const qInput = document.querySelector('[data-filter-q]') as HTMLInputElement | null
+    const areaSelect = document.querySelector('[data-filter-area]') as HTMLSelectElement | null
+    const categorySelect = document.querySelector('[data-filter-category]') as HTMLSelectElement | null
+    const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-listing-card]'))
+    const countEl = document.querySelector('[data-results-count]')
+    const emptyState = document.querySelector<HTMLElement>('[data-empty-state]')
+    const filterChips = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-filter-chip]')
+    )
+      
+
+    const rawQuery = params.get('q')?.trim() ?? ''
+    const query = rawQuery.toLowerCase()
+    const area = params.get('area') ?? ''
+    const category = params.get('category') ?? ''
+    const verified = params.get('verified') === 'true'
+    const onlineBooking = params.get('onlineBooking') === 'true'
+
+    const hasAnyFilter = Boolean(query || area || category || verified || onlineBooking)
+
+    filterChips.forEach((chip) => {
+      const chipType = chip.dataset.filterChip
+
+      const isActive =
+        (chipType === 'all' && !hasAnyFilter) ||
+        (chipType === 'verified' && verified) ||
+        (chipType === 'onlineBooking' && onlineBooking)
+
+      chip.classList.toggle('active', isActive)
+    })
+
+    if (qInput) qInput.value = rawQuery
+    if (areaSelect) areaSelect.value = area
+    if (categorySelect) categorySelect.value = category
+
+    let visibleCount = 0
+
+    cards.forEach((card) => {
+      const haystack = [
+        card.dataset.name,
+        card.dataset.category,
+        card.dataset.area,
+        card.dataset.summary,
+        card.dataset.attributes,
+      ]
+        .join(' ')
+        .toLowerCase()
+
+      const matchesQuery = !query || haystack.includes(query)
+      const matchesArea = !area || card.dataset.area === area
+      const matchesCategory = !category || card.dataset.category === category
+      const matchesVerified = !verified
+      const matchesOnlineBooking =
+        !onlineBooking || card.dataset.attributes?.includes('Online Booking')
+
+      const isVisible =
+        matchesQuery &&
+        matchesArea &&
+        matchesCategory &&
+        matchesVerified &&
+        matchesOnlineBooking
+
+      card.hidden = !isVisible
+
+      if (isVisible) visibleCount += 1
+    })
+
+    if (countEl) {
+      countEl.textContent = `Showing ${visibleCount} ${
+        visibleCount === 1 ? 'result' : 'results'
+      }`
+    }
+
+    if (emptyState) {
+      emptyState.hidden = visibleCount > 0
+    }
+  </script>
 </BaseLayout>
