@@ -120,7 +120,8 @@ const onlineBookingCount = listings.filter((item) =>
       </div>
     </section>
 
-      <section class="wrapper directory-results" data-directory-results>      <div class="results-head">
+      <section class="wrapper directory-results" data-directory-results data-view="grid">     
+       <div class="results-head">
         <span data-results-count>
           Showing {listings.length} {listings.length === 1 ? 'result' : 'results'}
         </span>
@@ -354,7 +355,7 @@ const onlineBookingCount = listings.filter((item) =>
 
         markerLayer.clearLayers()
 
-        const bounds: L.LatLngExpression[] = []
+        const bounds: L.LatLngTuple[] = []
 
         visibleListings.forEach((listing) => {
           if (!Number.isFinite(listing.lat) || !Number.isFinite(listing.lng)) return
@@ -394,47 +395,49 @@ const onlineBookingCount = listings.filter((item) =>
         }, 50)
       }
 
-      const setView = (view: 'grid' | 'map') => {
-        const isMap = view === 'map'
+const setPanelState = (element: HTMLElement | null, isVisible: boolean) => {
+  if (!element) return
 
-        results?.setAttribute('data-view', view)
+  element.hidden = !isVisible
+  element.toggleAttribute('hidden', !isVisible)
+  element.setAttribute('aria-hidden', String(!isVisible))
+  element.style.display = isVisible ? '' : 'none'
+}
 
-        if (grid) {
-          grid.hidden = isMap
-          grid.setAttribute('aria-hidden', String(isMap))
-        }
+    const setView = (view: 'grid' | 'map') => {
+      const isMap = view === 'map'
 
-        if (mapPanel) {
-          mapPanel.hidden = !isMap
-          mapPanel.setAttribute('aria-hidden', String(!isMap))
-        }
+      results?.setAttribute('data-view', view)
 
-        viewButtons.forEach((button) => {
-          const isActive = button.dataset.viewToggle === view
+      setPanelState(grid, !isMap)
+      setPanelState(mapPanel, isMap)
 
-          button.classList.toggle('active', isActive)
-          button.setAttribute('aria-pressed', String(isActive))
-        })
+      viewButtons.forEach((button) => {
+        const isActive = button.dataset.viewToggle === view
 
-        const nextUrl = new URL(window.location.href)
+        button.classList.toggle('active', isActive)
+        button.setAttribute('aria-pressed', String(isActive))
+      })
 
-        if (isMap) {
-          nextUrl.searchParams.set('view', 'map')
-        } else {
-          nextUrl.searchParams.delete('view')
-        }
+      const nextUrl = new URL(window.location.href)
 
-        window.history.replaceState({}, '', nextUrl)
-
-        if (isMap) {
-          initMap()
-          updateMapMarkers()
-
-          window.setTimeout(() => {
-            map?.invalidateSize()
-          }, 100)
-        }
+      if (isMap) {
+        nextUrl.searchParams.set('view', 'map')
+      } else {
+        nextUrl.searchParams.delete('view')
       }
+
+      window.history.replaceState({}, '', nextUrl)
+
+      if (isMap) {
+        initMap()
+        updateMapMarkers()
+
+        window.setTimeout(() => {
+          map?.invalidateSize()
+        }, 100)
+      }
+    }
 
       viewButtons.forEach((button) => {
         button.addEventListener('click', () => {
