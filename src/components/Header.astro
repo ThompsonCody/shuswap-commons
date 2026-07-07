@@ -6,9 +6,10 @@ type Props = {
 }
 
 const { overlay = true } = Astro.props
+const headerSearchQuery = Astro.url.searchParams.get('q') ?? ''
 ---
 
-<header class:list={['site-header', { 'is-overlay': overlay }]}>
+<header class:list={['site-header', { 'is-overlay': overlay }]} data-site-header>
   <div class="wrapper">
     <a class="logo" href={ROUTES.home} aria-label="Shuswap Commons home">
       <span>Shuswap</span>
@@ -37,36 +38,120 @@ const { overlay = true } = Astro.props
     </nav>
 
     <div class="header-actions">
+      <form class="header-search" action={ROUTES.directory} method="get">
+        <label>
+          <span class="sr-only">Search the directory</span>
+
+          <svg class="icon" aria-hidden="true">
+            <use href="#i-search" />
+          </svg>
+
+          <input
+            type="search"
+            name="q"
+            value={headerSearchQuery}
+            placeholder="Search"
+            autocomplete="off"
+          />
+        </label>
+      </form>
+
       <a class="add-btn" href={ROUTES.submit}>
         <svg class="icon" aria-hidden="true">
           <use href="#i-plus" />
         </svg>
+
         Add or Update
       </a>
     </div>
 
     <div class="mobile-header">
-      <a class="mobile-logo" href={ROUTES.home} aria-label="Shuswap Commons home">
-        <svg class="icon tree" aria-hidden="true">
-          <use href="#i-tree" />
-        </svg>
+      <div class="mobile-header-top">
+        <a class="mobile-logo" href={ROUTES.home} aria-label="Shuswap Commons home">
+          <svg class="icon tree" aria-hidden="true">
+            <use href="#i-tree" />
+          </svg>
 
-        <span>Shuswap<br />Commons</span>
-      </a>
+          <span>Shuswap<br />Commons</span>
+        </a>
 
-      <div class="mobile-icons" aria-label="Mobile navigation actions">
-        <a href={ROUTES.directory} aria-label="Search directory">
+        <div class="mobile-icons" aria-label="Mobile navigation actions">
+          <button
+            class="mobile-icon-button"
+            type="button"
+            aria-label="Open search"
+            aria-expanded="false"
+            data-mobile-search-toggle
+          >
+            <svg class="icon" aria-hidden="true">
+              <use href="#i-search" />
+            </svg>
+          </button>
+
+          <a href={ROUTES.directory} aria-label="Browse directory">
+            <svg class="icon" aria-hidden="true">
+              <use href="#i-menu" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <form
+        class="mobile-header-search"
+        action={ROUTES.directory}
+        method="get"
+        data-mobile-header-search
+        hidden
+      >
+        <label>
+          <span class="sr-only">Search the directory</span>
+
           <svg class="icon" aria-hidden="true">
             <use href="#i-search" />
           </svg>
-        </a>
 
-        <a href={ROUTES.directory} aria-label="Browse directory">
-          <svg class="icon" aria-hidden="true">
-            <use href="#i-menu" />
-          </svg>
-        </a>
-      </div>
+          <input
+            type="search"
+            name="q"
+            value={headerSearchQuery}
+            placeholder="Search businesses, services, or keywords..."
+            autocomplete="off"
+            data-mobile-search-input
+          />
+        </label>
+
+        <button type="submit">Search</button>
+      </form>
     </div>
   </div>
+
+  <script>
+    const header = document.querySelector('[data-site-header]')
+    const toggle = header?.querySelector<HTMLButtonElement>('[data-mobile-search-toggle]')
+    const search = header?.querySelector<HTMLElement>('[data-mobile-header-search]')
+    const input = header?.querySelector<HTMLInputElement>('[data-mobile-search-input]')
+
+    toggle?.addEventListener('click', () => {
+      if (!search) return
+
+      const isOpening = search.hidden
+
+      search.hidden = !isOpening
+      toggle.setAttribute('aria-expanded', String(isOpening))
+      toggle.setAttribute('aria-label', isOpening ? 'Close search' : 'Open search')
+
+      if (isOpening) {
+        window.setTimeout(() => input?.focus(), 50)
+      }
+    })
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape' || !search || search.hidden) return
+
+      search.hidden = true
+      toggle?.setAttribute('aria-expanded', 'false')
+      toggle?.setAttribute('aria-label', 'Open search')
+      toggle?.focus()
+    })
+  </script>
 </header>

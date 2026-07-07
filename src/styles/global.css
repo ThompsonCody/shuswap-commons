@@ -153,6 +153,90 @@ button, input { font: inherit; color: inherit; }
   background: rgba(9,18,19,.5);
   font-weight: 850;
 }
+
+.header-search {
+  width: clamp(180px, 16vw, 260px);
+}
+
+.header-search label,
+.mobile-header-search label {
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(255, 255, 255, .22);
+  border-radius: 9px;
+  background: rgba(9, 18, 19, .46);
+  padding: 0 14px;
+  color: var(--muted);
+}
+
+.header-search input,
+.mobile-header-search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--cream);
+  font: inherit;
+  font-weight: 750;
+}
+
+.header-search input::placeholder,
+.mobile-header-search input::placeholder {
+  color: var(--muted);
+  opacity: .9;
+}
+
+.header-search:focus-within label,
+.mobile-header-search:focus-within label {
+  border-color: rgba(242, 177, 91, .78);
+  background: rgba(9, 18, 19, .68);
+}
+
+.mobile-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mobile-icon-button {
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.mobile-header-search {
+  width: 100%;
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+}
+
+.mobile-header-search[hidden] {
+  display: none !important;
+}
+
+.mobile-header-search button {
+  min-height: 46px;
+  border: 1px solid rgba(242, 177, 91, .68);
+  border-radius: 9px;
+  background: rgba(9, 18, 19, .5);
+  color: var(--amber-2);
+  padding: 0 16px;
+  font: inherit;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+
 .user-btn {
   width: 46px; height: 46px;
   display: grid; place-items: center;
@@ -972,7 +1056,11 @@ button, input { font: inherit; color: inherit; }
   .site-header .wrapper > .logo,
   .site-header .nav,
   .site-header .header-actions { display: none; }
-  .mobile-header { display:flex; align-items:center; justify-content:space-between; width:100%; }
+  /* .mobile-header { display:flex; align-items:center; justify-content:space-between; width:100%; } */
+  .mobile-header {
+      display: block;
+      width: 100%;
+    }
   .mobile-logo { display:flex; align-items:center; gap:8px; font-weight:950; line-height:.9; letter-spacing:-.06em; }
   .mobile-logo .tree { width:24px; height:24px; }
   .mobile-icons { display:flex; gap:20px; }
