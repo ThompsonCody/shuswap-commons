@@ -595,6 +595,39 @@ button, input { font: inherit; color: inherit; }
   align-items: stretch;
 }
 
+.verified.is-verified {
+  color: var(--green);
+}
+
+.verified.is-needs-review {
+  color: var(--amber);
+}
+
+.verified.is-community-submitted {
+  color: var(--muted);
+}
+
+.business-card__verified-row.is-needs-review,
+.listing-status-label.is-needs-review {
+  color: var(--amber);
+}
+
+.business-card__verified-row.is-community-submitted,
+.listing-status-label.is-community-submitted {
+  color: var(--muted);
+}
+
+.business-card__verified-row.is-verified,
+.listing-status-label.is-verified {
+  color: var(--green);
+}
+
+.listing-status-label {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 900;
+}
+
 .business-card {
   position: relative;
   overflow: hidden;

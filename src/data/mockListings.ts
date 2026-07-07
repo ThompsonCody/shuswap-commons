@@ -1,16 +1,44 @@
-export type ListingHours = {
-  day: string
-  hours: string
-}
+export type ListingHours = { day: string; hours: string }
 
-export type ListingHighlight = {
-  icon: string
-  label: string
-}
+export type ListingHighlight = { icon: string; label: string }
 
 export type ListingSocials = {
   instagram?: string
   facebook?: string
+}
+
+export type ListingStatus =
+  | 'verified'
+  | 'needs-review'
+  | 'community-submitted'
+
+export const listingStatusMeta: Record<
+  ListingStatus,
+  {
+    label: string
+    shortLabel: string
+    dateLabel: string
+    ariaLabel: string
+  }
+> = {
+  verified: {
+    label: 'Verified',
+    shortLabel: 'Verified',
+    dateLabel: 'Last verified',
+    ariaLabel: 'Verified listing',
+  },
+  'needs-review': {
+    label: 'Needs Review',
+    shortLabel: 'Needs review',
+    dateLabel: 'Last checked',
+    ariaLabel: 'Listing needs review',
+  },
+  'community-submitted': {
+    label: 'Community Submitted',
+    shortLabel: 'Submitted',
+    dateLabel: 'Submitted',
+    ariaLabel: 'Community-submitted listing',
+  },
 }
 
 export type Listing = {
@@ -22,7 +50,10 @@ export type Listing = {
   image: string
   summary: string
   closes: string
-  verified: string
+
+  status: ListingStatus
+  lastChecked: string
+  sourceUrl?: string
 
   phone: string
   email: string
@@ -35,7 +66,6 @@ export type Listing = {
     lat: number
     lng: number
   }
-
   detailAbout: string[]
   hours: ListingHours[]
   serviceArea: string
@@ -44,6 +74,9 @@ export type Listing = {
   gallery: string[]
   socials?: ListingSocials
 }
+
+export const isListingVerified = (listing: Listing) =>
+  listing.status === 'verified'
 
 const standardWeekdayHours: ListingHours[] = [
   { day: 'Monday', hours: '9:00 AM – 6:00 PM' },
@@ -75,8 +108,9 @@ export const listings: Listing[] = [
     image: '/images/listing-diner.jpg',
     summary: 'Comfort food, daily specials, and friendly service in the heart of town.',
     closes: '9:00 PM',
-    verified: 'May 20, 2026',
-
+    status: 'verified',
+    lastChecked: 'May 20, 2026',
+    sourceUrl: 'https://maplestreetdiner.ca',
     phone: '(250) 832-1948',
     email: 'hello@maplestreetdiner.ca',
     website: 'https://maplestreetdiner.ca',
@@ -124,8 +158,9 @@ export const listings: Listing[] = [
     image: '/images/listing-deck.jpg',
     summary: 'Custom decks, railings, and outdoor living spaces built to last.',
     closes: '5:00 PM',
-    verified: 'May 18, 2026',
-
+    status: 'verified',
+    lastChecked: 'May 18, 2026',
+    sourceUrl: 'https://shuswapdeckworks.ca',
     phone: '(250) 675-4420',
     email: 'quotes@shuswapdeckworks.ca',
     website: 'https://shuswapdeckworks.ca',
@@ -169,8 +204,9 @@ export const listings: Listing[] = [
     image: '/images/listing-paddles.jpg',
     summary: 'Kayak, canoe & SUP rentals, tours and outdoor adventures.',
     closes: '6:00 PM',
-    verified: 'May 18, 2026',
-
+    status: 'verified',
+    lastChecked: 'May 18, 2026',
+    sourceUrl: 'https://shuswappaddles.ca',
     phone: '(250) 836-1122',
     email: 'info@shuswappaddles.ca',
     website: 'https://shuswappaddles.ca',
@@ -226,8 +262,9 @@ export const listings: Listing[] = [
     image: '/images/listing-mercantile.jpg',
     summary: 'Curated goods, home decor, and gifts from local makers.',
     closes: '5:30 PM',
-    verified: 'May 17, 2026',
-
+    status: 'community-submitted',
+    lastChecked: 'May 17, 2026',
+    sourceUrl: 'https://northshoremercantile.ca',
     phone: '(250) 955-2044',
     email: 'shop@northshoremercantile.ca',
     website: 'https://northshoremercantile.ca',
@@ -271,8 +308,9 @@ export const listings: Listing[] = [
     image: '/images/listing-wellness.jpg',
     summary: 'Massage therapy, holistic health, and wellness coaching.',
     closes: '8:00 PM',
-    verified: 'May 16, 2026',
-
+    status: 'verified',
+    lastChecked: 'May 16, 2026',
+    sourceUrl: 'https://trubalancewellness.ca',
     phone: '(250) 832-7740',
     email: 'care@trubalancewellness.ca',
     website: 'https://trubalancewellness.ca',
@@ -324,8 +362,9 @@ export const listings: Listing[] = [
     image: '/images/listing-legal.jpg',
     summary: 'Wills, estates, real estate and business law. Local, approachable, trusted.',
     closes: '5:00 PM',
-    verified: 'May 15, 2026',
-
+    status: 'verified',
+    lastChecked: 'May 15, 2026',
+    sourceUrl: 'https://harperlegal.ca',
     phone: '(250) 832-4409',
     email: 'office@harperlegal.ca',
     website: 'https://harperlegal.ca',
@@ -370,8 +409,9 @@ export const listings: Listing[] = [
     image: '/images/listing-watershed.jpg',
     summary: 'Protecting our lakes and rivers through education and action.',
     closes: '4:30 PM',
-    verified: 'May 14, 2026',
-
+    status: 'verified',
+    lastChecked: 'May 14, 2026',
+    sourceUrl: 'https://shuswapwatershed.ca',
     phone: '(250) 832-1117',
     email: 'info@shuswapwatershed.ca',
     website: 'https://shuswapwatershed.ca',
@@ -416,8 +456,9 @@ export const listings: Listing[] = [
     image: '/images/listing-bnb.jpg',
     summary: 'Relaxing lakefront stays with breathtaking mountain views.',
     closes: '10:00 PM',
-    verified: 'May 14, 2026',
-
+    status: 'verified',
+    lastChecked: 'May 14, 2026',
+    sourceUrl: 'https://lakesideretreat.ca',
     phone: '(250) 836-7088',
     email: 'stay@lakesideretreat.ca',
     website: 'https://lakesideretreat.ca',
@@ -469,8 +510,9 @@ export const listings: Listing[] = [
     image: '/images/listing-plumbing.jpg',
     summary: 'Plumbing repairs, renovations, and new installations.',
     closes: '5:00 PM',
-    verified: 'May 13, 2026',
-
+    status: 'needs-review',
+    lastChecked: 'May 13, 2026',
+    sourceUrl: 'https://shuswapplumbing.ca',
     phone: '(250) 679-5532',
     email: 'service@shuswapplumbing.ca',
     website: 'https://shuswapplumbing.ca',
@@ -514,8 +556,9 @@ export const listings: Listing[] = [
     image: '/images/listing-coffee.jpg',
     summary: 'Locally roasted coffee, tea, and house-baked goodness.',
     closes: '4:00 PM',
-    verified: 'May 13, 2026',
-
+    status: 'verified',
+    lastChecked: 'May 13, 2026',
+    sourceUrl: 'https://foothillscoffee.ca',
     phone: '(250) 836-4040',
     email: 'hello@foothillscoffee.ca',
     website: 'https://foothillscoffee.ca',
@@ -567,7 +610,9 @@ export const listings: Listing[] = [
     image: '/images/listing-trails.jpg',
     summary: 'Building and maintaining trails for our community to enjoy.',
     closes: '6:00 PM',
-    verified: 'May 12, 2026',
+    status: 'community-submitted',
+    lastChecked: 'May 12, 2026',
+    sourceUrl: 'https://shuswaptrailcollective.ca',
 
     phone: '(250) 832-9088',
     email: 'trails@shuswaptrailcollective.ca',
@@ -612,8 +657,9 @@ export const listings: Listing[] = [
     image: '/images/listing-legal.jpg',
     summary: 'Bookkeeping, tax prep, and business advice for local businesses.',
     closes: '5:00 PM',
-    verified: 'May 12, 2026',
-
+    status: 'verified',
+    lastChecked: 'May 12, 2026',
+    sourceUrl: 'https://clearpathaccounting.ca',
     phone: '(250) 832-6610',
     email: 'hello@clearpathaccounting.ca',
     website: 'https://clearpathaccounting.ca',
@@ -659,4 +705,5 @@ export const areas = [
   'Sorrento',
   'Salmon Arm',
   'Sicamous',
+  'chase',
 ]

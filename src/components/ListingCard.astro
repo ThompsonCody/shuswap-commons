@@ -1,5 +1,5 @@
 ---
-import type { Listing } from '../data/mockListings'
+import { listingStatusMeta, type Listing } from '../data/mockListings'
 import { getListingHref } from '../data/siteRoutes'
 
 type Props = {
@@ -10,6 +10,7 @@ type Props = {
 const { item, variant = 'directory' } = Astro.props
 const isHome = variant === 'home'
 const listingHref = getListingHref(item.slug)
+const statusMeta = listingStatusMeta[item.status]
 ---
 
 <article class:list={['business-card', `business-card--${variant}`]}>
@@ -25,7 +26,11 @@ const listingHref = getListingHref(item.slug)
         <a href={listingHref}>{item.name}</a>
       </h3>
 
-      <span class="verified" aria-label="Verified listing">
+      <span
+        class:list={['verified', `is-${item.status}`]}
+        aria-label={statusMeta.ariaLabel}
+        title={statusMeta.label}
+      >
         <svg class="icon" aria-hidden="true">
           <use href="#i-badge" />
         </svg>
@@ -52,9 +57,9 @@ const listingHref = getListingHref(item.slug)
 
     {
       isHome ? (
-        <div class="business-card__verified-row">
-          <span>Last verified</span>
-          <time datetime={item.verified}>{item.verified}</time>
+        <div class:list={['business-card__verified-row', `is-${item.status}`]}>
+          <span>{statusMeta.dateLabel}</span>
+          <time>{item.lastChecked}</time>
         </div>
       ) : (
         <div class="business-card__status">
