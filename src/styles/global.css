@@ -1480,6 +1480,29 @@ button, input { font: inherit; color: inherit; }
   padding-top: 70px;
 }
 
+.submit-context-note {
+  margin: 0 0 22px;
+  border: 1px solid rgba(237, 166, 74, .28);
+  border-radius: 10px;
+  background: rgba(237, 166, 74, .1);
+  padding: 13px 16px;
+  color: var(--amber);
+  font-weight: 800;
+}
+
+.submit-existing-listing small {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: .9rem;
+  line-height: 1.4;
+}
+
+.submit-form [hidden] {
+  display: none !important;
+}
+
+
 .submit-form {
   border: 1px solid var(--line);
   border-radius: 18px;

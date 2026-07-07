@@ -2,11 +2,31 @@
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { ROUTES } from '../data/siteRoutes'
 import { categories } from '../data/categories'
+import { areas, listings } from '../data/mockListings'
+
+const submissionModes = [
+  {
+    value: 'add',
+    label: 'Add a new listing',
+  },
+  {
+    value: 'edit',
+    label: 'Suggest an edit',
+  },
+  {
+    value: 'claim',
+    label: 'Update a listing I manage',
+  },
+  {
+    value: 'resource',
+    label: 'Share a community resource',
+  },
+]
 ---
 
 <BaseLayout
   title="Submit a Listing | Shuswap Commons"
-  description="Add a business, suggest an edit, or claim a listing on Shuswap Commons."
+  description="Add a business, suggest an edit, or update a listing on Shuswap Commons."
 >
   <main>
     <section class="page-hero page-hero--compact">
@@ -17,83 +37,164 @@ import { categories } from '../data/categories'
           <span>Submit</span>
         </div>
 
-        <h1>Add or update a listing.</h1>
+        <h1 data-submit-heading>Add or update a listing.</h1>
 
-        <p>
+        <p data-submit-intro>
           Help keep the Shuswap Commons current. Submit a local business,
-          suggest a correction, or claim an existing listing.
+          suggest a correction, or update an existing listing.
         </p>
       </div>
     </section>
 
     <section class="wrapper submit-layout">
-      <form class="submit-form glass" name="submit-listing" method="POST" data-netlify="true">
+      <form
+        class="submit-form glass"
+        name="submit-listing"
+        method="POST"
+        data-netlify="true"
+        data-submit-form
+      >
         <input type="hidden" name="form-name" value="submit-listing" />
+        <input
+          type="hidden"
+          name="source_listing_slug"
+          value=""
+          data-source-listing-slug
+        />
 
         <div class="section-title">
-          <h2>Listing details</h2>
-          <p>Start with the practical information people need most.</p>
+          <h2 data-submit-form-title>Listing details</h2>
+          <p data-submit-form-intro>
+            Start with the practical information people need most.
+          </p>
         </div>
+
+        <p class="submit-context-note" data-submit-context hidden></p>
 
         <div class="form-grid">
           <label class="form-field">
             <span>Submission type</span>
-            <select name="submission_type">
-              <option>Add a new business</option>
-              <option>Suggest an edit</option>
-              <option>Claim this listing</option>
-              <option>Share a community resource</option>
+
+            <select name="submission_type" data-submission-type>
+              {
+                submissionModes.map((mode) => (
+                  <option value={mode.value}>{mode.label}</option>
+                ))
+              }
             </select>
+          </label>
+
+          <label
+            class="form-field full submit-existing-listing"
+            data-existing-listing-field
+            hidden
+          >
+            <span>Existing listing</span>
+
+            <select name="existing_listing" data-existing-listing>
+              <option value="">Choose a listing</option>
+              {
+                listings.map((listing) => (
+                  <option
+                    value={listing.slug}
+                    data-name={listing.name}
+                    data-category={listing.category}
+                    data-area={listing.area}
+                    data-website={listing.website}
+                    data-contact={`${listing.phone} / ${listing.email}`}
+                  >
+                    {listing.name} — {listing.area}
+                  </option>
+                ))
+              }
+            </select>
+
+            <small>
+              Use this when suggesting an edit or updating a listing that is
+              already on Shuswap Commons.
+            </small>
           </label>
 
           <label class="form-field">
             <span>Business or organization name</span>
-            <input name="business_name" type="text" placeholder="Example: Maple Street Diner" />
+
+            <input
+              name="business_name"
+              type="text"
+              placeholder="Example: Maple Street Diner"
+              data-business-name
+            />
           </label>
 
           <label class="form-field">
             <span>Category</span>
-            <select name="category">
-                {
-                    categories.map((category) => (
-                    <option value={category.name}>{category.name}</option>
-                    ))
-                }
+
+            <select name="category" data-category-field>
+              <option value="">Choose a category</option>
+              {
+                categories.map((category) => (
+                  <option value={category.name}>{category.name}</option>
+                ))
+              }
             </select>
           </label>
 
           <label class="form-field">
             <span>Area</span>
-            <input name="area" type="text" placeholder="Salmon Arm, Sicamous, Blind Bay..." />
+
+            <select name="area" data-area-field>
+              <option value="">Choose an area</option>
+              {areas.map((area) => <option value={area}>{area}</option>)}
+            </select>
           </label>
 
           <label class="form-field">
             <span>Website</span>
-            <input name="website" type="url" placeholder="https://example.ca" />
+
+            <input
+              name="website"
+              type="url"
+              placeholder="https://example.ca"
+              data-website-field
+            />
           </label>
 
           <label class="form-field">
             <span>Phone or email</span>
-            <input name="contact" type="text" placeholder="Phone number or email address" />
+
+            <input
+              name="contact"
+              type="text"
+              placeholder="Phone number or email address"
+              data-contact-field
+            />
           </label>
 
           <label class="form-field full">
-            <span>What should be added or changed?</span>
-            <textarea name="message" rows="6" placeholder="Tell us what information should be added, corrected, or verified."></textarea>
+            <span data-message-label>What should be added or changed?</span>
+
+            <textarea
+              name="message"
+              rows="6"
+              placeholder="Tell us what information should be added, corrected, or verified."
+              data-message-field
+            ></textarea>
           </label>
 
           <label class="form-field">
             <span>Your name</span>
+
             <input name="your_name" type="text" />
           </label>
 
           <label class="form-field">
             <span>Your email</span>
+
             <input name="your_email" type="email" />
           </label>
         </div>
 
-        <button class="btn amber submit-button" type="submit">
+        <button class="btn amber submit-button" type="submit" data-submit-button>
           Send Submission
 
           <svg class="icon" aria-hidden="true">
@@ -128,4 +229,221 @@ import { categories } from '../data/categories'
       </aside>
     </section>
   </main>
+
+  <script>
+    type SubmitMode = 'add' | 'edit' | 'claim' | 'resource'
+
+    const params = new URLSearchParams(window.location.search)
+
+    const modeSelect = document.querySelector<HTMLSelectElement>('[data-submission-type]')
+    const existingListingField = document.querySelector<HTMLElement>(
+      '[data-existing-listing-field]'
+    )
+    const existingListingSelect = document.querySelector<HTMLSelectElement>(
+      '[data-existing-listing]'
+    )
+    const sourceListingSlug = document.querySelector<HTMLInputElement>(
+      '[data-source-listing-slug]'
+    )
+
+    const heading = document.querySelector<HTMLElement>('[data-submit-heading]')
+    const intro = document.querySelector<HTMLElement>('[data-submit-intro]')
+    const formTitle = document.querySelector<HTMLElement>('[data-submit-form-title]')
+    const formIntro = document.querySelector<HTMLElement>('[data-submit-form-intro]')
+    const contextNote = document.querySelector<HTMLElement>('[data-submit-context]')
+    const messageLabel = document.querySelector<HTMLElement>('[data-message-label]')
+    const messageField = document.querySelector<HTMLTextAreaElement>('[data-message-field]')
+    const submitButton = document.querySelector<HTMLButtonElement>('[data-submit-button]')
+
+    const businessName = document.querySelector<HTMLInputElement>('[data-business-name]')
+    const categoryField = document.querySelector<HTMLSelectElement>('[data-category-field]')
+    const areaField = document.querySelector<HTMLSelectElement>('[data-area-field]')
+    const websiteField = document.querySelector<HTMLInputElement>('[data-website-field]')
+    const contactField = document.querySelector<HTMLInputElement>('[data-contact-field]')
+
+    const submitModes: Record<
+      SubmitMode,
+      {
+        heading: string
+        intro: string
+        formTitle: string
+        formIntro: string
+        messageLabel: string
+        messagePlaceholder: string
+        buttonLabel: string
+        showExistingListing: boolean
+      }
+    > = {
+      add: {
+        heading: 'Add a listing.',
+        intro:
+          'Submit a local business, organization, service, or useful place we should review for Shuswap Commons.',
+        formTitle: 'New listing details',
+        formIntro: 'Share the practical information people need before visiting, calling, or booking.',
+        messageLabel: 'What should we know about this listing?',
+        messagePlaceholder:
+          'Tell us what this business or organization does, who it serves, and any useful details people should know.',
+        buttonLabel: 'Send Listing',
+        showExistingListing: false,
+      },
+      edit: {
+        heading: 'Suggest an edit.',
+        intro:
+          'Found outdated hours, contact details, categories, or location information? Send us a correction.',
+        formTitle: 'Edit details',
+        formIntro: 'Choose the existing listing if you can, then describe what should change.',
+        messageLabel: 'What should be corrected?',
+        messagePlaceholder:
+          'Tell us what is outdated, missing, incorrect, or needs to be checked.',
+        buttonLabel: 'Send Edit',
+        showExistingListing: true,
+      },
+      claim: {
+        heading: 'Update a listing you manage.',
+        intro:
+          'Send updated details for a business or organization you own, manage, or represent.',
+        formTitle: 'Managed listing update',
+        formIntro:
+          'Choose the existing listing and share the updates you want reviewed.',
+        messageLabel: 'What would you like updated?',
+        messagePlaceholder:
+          'Tell us what should be updated, added, removed, or verified for this listing.',
+        buttonLabel: 'Send Update',
+        showExistingListing: true,
+      },
+      resource: {
+        heading: 'Share a community resource.',
+        intro:
+          'Suggest a useful local resource, nonprofit, public service, group, or community information source.',
+        formTitle: 'Community resource details',
+        formIntro:
+          'Share the practical details that would help residents or visitors use this resource.',
+        messageLabel: 'What makes this resource useful?',
+        messagePlaceholder:
+          'Tell us who this helps, where it applies, and what information should be included.',
+        buttonLabel: 'Send Resource',
+        showExistingListing: false,
+      },
+    }
+
+    const isSubmitMode = (value: string | null): value is SubmitMode =>
+      value === 'add' ||
+      value === 'edit' ||
+      value === 'claim' ||
+      value === 'resource'
+
+    const getInitialMode = (): SubmitMode => {
+      const requestedMode = params.get('type')
+      const requestedListing = params.get('listing')
+
+      if (isSubmitMode(requestedMode)) return requestedMode
+
+      return requestedListing ? 'edit' : 'add'
+    }
+
+    const getSelectedListingOption = () => {
+      if (!existingListingSelect) return null
+
+      const option = existingListingSelect.selectedOptions[0]
+
+      if (!option || !option.value) return null
+
+      return option
+    }
+
+    const fillIfEmpty = (
+      field: HTMLInputElement | HTMLSelectElement | null,
+      value?: string
+    ) => {
+      if (!field || !value || field.value) return
+
+      field.value = value
+    }
+
+    const prefillFromSelectedListing = () => {
+      const selectedOption = getSelectedListingOption()
+
+      if (!selectedOption) {
+        if (sourceListingSlug) sourceListingSlug.value = ''
+
+        if (contextNote) {
+          contextNote.hidden = true
+          contextNote.textContent = ''
+        }
+
+        return
+      }
+
+      const listingName = selectedOption.dataset.name ?? ''
+      const listingCategory = selectedOption.dataset.category ?? ''
+      const listingArea = selectedOption.dataset.area ?? ''
+      const listingWebsite = selectedOption.dataset.website ?? ''
+      const listingContact = selectedOption.dataset.contact ?? ''
+
+      if (sourceListingSlug) sourceListingSlug.value = selectedOption.value
+
+      fillIfEmpty(businessName, listingName)
+      fillIfEmpty(categoryField, listingCategory)
+      fillIfEmpty(areaField, listingArea)
+      fillIfEmpty(websiteField, listingWebsite)
+      fillIfEmpty(contactField, listingContact)
+
+      if (contextNote) {
+        contextNote.hidden = false
+        contextNote.textContent = `This submission is connected to ${listingName}.`
+      }
+    }
+
+    const setMode = (mode: SubmitMode) => {
+      const modeContent = submitModes[mode]
+
+      if (modeSelect) modeSelect.value = mode
+      if (heading) heading.textContent = modeContent.heading
+      if (intro) intro.textContent = modeContent.intro
+      if (formTitle) formTitle.textContent = modeContent.formTitle
+      if (formIntro) formIntro.textContent = modeContent.formIntro
+      if (messageLabel) messageLabel.textContent = modeContent.messageLabel
+      if (messageField) messageField.placeholder = modeContent.messagePlaceholder
+
+      if (submitButton) {
+        const icon = submitButton.querySelector('svg')
+        submitButton.textContent = modeContent.buttonLabel
+
+        if (icon) submitButton.append(icon)
+      }
+
+      if (existingListingField) {
+        existingListingField.hidden = !modeContent.showExistingListing
+      }
+
+      if (!modeContent.showExistingListing && sourceListingSlug) {
+        sourceListingSlug.value = ''
+      }
+
+      if (modeContent.showExistingListing) {
+        prefillFromSelectedListing()
+      } else if (contextNote) {
+        contextNote.hidden = true
+        contextNote.textContent = ''
+      }
+    }
+
+    const initialMode = getInitialMode()
+    const initialListingSlug = params.get('listing')
+
+    if (existingListingSelect && initialListingSlug) {
+      existingListingSelect.value = initialListingSlug
+    }
+
+    setMode(initialMode)
+
+    modeSelect?.addEventListener('change', () => {
+      const selectedMode = isSubmitMode(modeSelect.value) ? modeSelect.value : 'add'
+      setMode(selectedMode)
+    })
+
+    existingListingSelect?.addEventListener('change', () => {
+      prefillFromSelectedListing()
+    })
+  </script>
 </BaseLayout>

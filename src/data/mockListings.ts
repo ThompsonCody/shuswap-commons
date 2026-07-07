@@ -705,5 +705,5 @@ export const areas = [
   'Sorrento',
   'Salmon Arm',
   'Sicamous',
-  'chase',
+  'Chase',
 ]
