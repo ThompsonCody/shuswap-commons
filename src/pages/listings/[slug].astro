@@ -27,6 +27,15 @@ const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
 const phoneHref = `tel:${listing.phone.replace(/[^\d+]/g, '')}`
 const mailHref = `mailto:${listing.email}`
 
+const socialLinks = [
+  listing.socials?.instagram
+    ? { label: 'Instagram', href: listing.socials.instagram }
+    : null,
+  listing.socials?.facebook
+    ? { label: 'Facebook', href: listing.socials.facebook }
+    : null,
+].filter((item): item is { label: string; href: string } => Boolean(item))
+
 const mapStyle = `background: linear-gradient(rgba(206,229,201,.5), rgba(206,229,201,.5)), url('${listing.mapImage}') center/cover;`
 ---
 
@@ -185,8 +194,7 @@ const mapStyle = `background: linear-gradient(rgba(206,229,201,.5), rgba(206,229
                 <a href={listing.website} target="_blank" rel="noreferrer">
                   {listing.displayWebsite}
                 </a>
-              </p>
-
+              </p>   
               <p>
                 <svg class="icon" aria-hidden="true">
                   <use href="#i-pin" />
@@ -195,6 +203,22 @@ const mapStyle = `background: linear-gradient(rgba(206,229,201,.5), rgba(206,229
                   {listing.address}
                 </a>
               </p>
+              
+              {
+                socialLinks.length > 0 && (
+                  <div class="contact-socials" aria-label={`${listing.name} social links`}>
+                    {socialLinks.map((social) => (
+                      <a href={social.href} target="_blank" rel="noreferrer">
+                        {social.label}
+                        <svg class="icon" aria-hidden="true">
+                          <use href="#i-up" />
+                        </svg>
+                      </a>
+                    ))}
+                  </div>
+                )
+              }
+
             </div>
           </article>
 
