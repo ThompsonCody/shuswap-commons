@@ -41,7 +41,7 @@ src/
 ├─ components/
 │  └─ ListingCard.astro
 ├─ data/
-│  └─ mockListings.ts
+│  └─ listings.ts
 ├─ pages/
 │  ├─ index.astro
 │  ├─ directory.astro
