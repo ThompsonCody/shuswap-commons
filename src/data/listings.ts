@@ -46,32 +46,38 @@ export type Listing = {
   slug: string
   category: string
   area: string
-  distance: string
-  image: string
+
+  // Optional presentation / derived data
+  distance?: string
+  image?: string
+  closes?: string
+
   summary: string
-  closes: string
 
   status: ListingStatus
   lastChecked: string
   sourceUrl?: string
 
-  phone: string
-  email: string
-  website: string
-  displayWebsite: string
-  address: string
+  phone?: string
+  email?: string
+  website?: string
+  displayWebsite?: string
+  address?: string
+
   mapQuery: string
-  mapImage: string
-  coordinates: {
+  mapImage?: string
+  coordinates?: {
     lat: number
     lng: number
   }
+
   detailAbout: string[]
-  hours: ListingHours[]
-  serviceArea: string
+  hours?: ListingHours[]
+  serviceArea?: string
   attributes: string[]
   highlights: ListingHighlight[]
-  gallery: string[]
+  gallery?: string[]
+
   socials?: ListingSocials
 }
 
@@ -100,99 +106,99 @@ const eveningFoodHours: ListingHours[] = [
 
 export const listings: Listing[] = [
   {
-    name: 'Maple Street Diner',
-    slug: 'maple-street-diner',
-    category: 'Food & Drink',
-    area: 'Salmon Arm',
-    distance: '0.6 km',
-    image: '/images/listing-diner.jpg',
-    summary: 'Comfort food, daily specials, and friendly service in the heart of town.',
-    closes: '9:00 PM',
+    name: 'Anglemont Inn',
+    slug: 'anglemont-inn',
+    category: 'Accommodation & Travel',
+    area: 'Anglemont',
+
+    summary:
+      'North Shuswap inn offering guest rooms, shared amenities, and whole-property bookings for groups and events.',
+
     status: 'verified',
-    lastChecked: 'May 20, 2026',
-    sourceUrl: 'https://maplestreetdiner.ca',
-    phone: '(250) 832-1948',
-    email: 'hello@maplestreetdiner.ca',
-    website: 'https://maplestreetdiner.ca',
-    displayWebsite: 'maplestreetdiner.ca',
-    address: '240 Maple Street NE, Salmon Arm, BC',
-    mapQuery: 'Maple Street Diner Salmon Arm BC',
-    mapImage: '/images/area-lake.jpg',
-    coordinates: {
-      lat: 50.7008,
-      lng: -119.2835,
-    },
+    lastChecked: 'September 15, 2026',
+    sourceUrl: 'https://www.anglemontinn.com/',
+
+    phone: '(250) 955-0701',
+    email: 'info@anglemontinn.com',
+    website: 'https://www.anglemontinn.com/',
+    displayWebsite: 'anglemontinn.com',
+    address: '7387 Estate Drive, Anglemont, BC V0E 1M8',
+
+    mapQuery: 'Anglemont Inn, 7387 Estate Drive, Anglemont, BC V0E 1M8',
 
     detailAbout: [
-      'A casual local diner serving comfort food, daily specials, coffee, and friendly service in central Salmon Arm.',
-      'A useful stop for residents, visitors, road-trippers, and anyone looking for a familiar meal without fuss.',
+      'Anglemont Inn is located on the North Shore of Shuswap Lake and offers guest accommodation for visitors to the North Shuswap.',
+      'Guest amenities include private bathrooms, mini fridges, Wi-Fi, streaming-capable TVs, and access to a shared kitchen. The entire property can also be booked for weddings, family reunions, and other events.',
     ],
-    hours: eveningFoodHours,
-    serviceArea: 'Salmon Arm and surrounding communities.',
-    attributes: ['Locally Owned', 'Family Friendly', 'Takeout', 'Breakfast', 'Lunch', 'Dinner'],
+
+    serviceArea: 'Anglemont and visitors to the North Shuswap.',
+
+    attributes: [
+      'Accommodation',
+      'Pet Friendly',
+      'Event Bookings',
+      'Shared Kitchen',
+      'Wi-Fi',
+    ],
+
     highlights: [
-      { icon: 'i-food', label: 'Comfort Food' },
-      { icon: 'i-users', label: 'Family Friendly' },
-      { icon: 'i-badge', label: 'Daily Specials' },
-      { icon: 'i-pin', label: 'Central Location' },
+      { icon: 'i-bed', label: 'Guest Rooms' },
+      { icon: 'i-users', label: 'Group Bookings' },
+      { icon: 'i-pin', label: 'North Shuswap' },
+      { icon: 'i-tree', label: 'Lake Country' },
     ],
-    gallery: [
-      '/images/listing-diner.jpg',
-      '/images/listing-coffee.jpg',
-      '/images/listing-mercantile.jpg',
-      '/images/area-lake.jpg',
-      '/images/hero-shuswap.jpg',
-      '/images/listing-diner.jpg',
-    ],
-    socials: {
-      instagram: 'https://instagram.com',
-      facebook: 'https://facebook.com',
-    },
   },
   {
-    name: 'Shuswap Deck Works',
-    slug: 'shuswap-deck-works',
-    category: 'Trades & Home Services',
-    area: 'Blind Bay',
-    distance: '12 km',
-    image: '/images/listing-deck.jpg',
-    summary: 'Custom decks, railings, and outdoor living spaces built to last.',
-    closes: '5:00 PM',
+    name: 'Anglemont Marina',
+    slug: 'anglemont-marina',
+    category: 'Outdoor & Recreation',
+    area: 'Anglemont',
+
+    summary:
+      'Waterfront marina on Shuswap Lake offering boat rentals, moorage, premium fuel, boat launch services, paddleboard rentals, and lake-day supplies.',
+
     status: 'verified',
-    lastChecked: 'May 18, 2026',
-    sourceUrl: 'https://shuswapdeckworks.ca',
-    phone: '(250) 675-4420',
-    email: 'quotes@shuswapdeckworks.ca',
-    website: 'https://shuswapdeckworks.ca',
-    displayWebsite: 'shuswapdeckworks.ca',
-    address: 'Blind Bay, BC',
-    mapQuery: 'Shuswap Deck Works Blind Bay BC',
-    mapImage: '/images/area-lake.jpg',
-    coordinates: {
-      lat: 50.8758,
-      lng: -119.3865,
-    },
+    lastChecked: 'September 16, 2026',
+    sourceUrl: 'https://anglemontmarina.com/',
+
+    phone: '(250) 955-2277',
+    email: 'info@anglemontmarina.com',
+    website: 'https://anglemontmarina.com/',
+    displayWebsite: 'anglemontmarina.com',
+    address: '2559 Marina Road, Anglemont, BC V0E 1M8',
+
+    mapQuery:
+      'Anglemont Marina, 2559 Marina Road, Anglemont, BC V0E 1M8',
 
     detailAbout: [
-      'A local deck and outdoor-living contractor focused on durable builds, lake-country homes, railings, and exterior upgrades.',
-      'Helpful for homeowners looking to improve patios, decks, stairs, and usable outdoor space around the Shuswap.',
+      'Anglemont Marina is a waterfront marina on the north shore of Shuswap Lake, accessible by both road and water.',
+      'Services include seasonal and short-term moorage, premium boat fuel, boat launching, boat and Sea-Doo rentals, paddleboard rentals, and a marina store carrying groceries, clothing, souvenirs, boating supplies, and other lake-day essentials.',
     ],
-    hours: standardWeekdayHours,
-    serviceArea: 'Blind Bay, Sorrento, Eagle Bay, Salmon Arm, and nearby South Shuswap communities.',
-    attributes: ['Locally Owned', 'Free Estimates', 'Custom Builds', 'Outdoor Living', 'Seasonal'],
+
+    hours: [
+      { day: 'April', hours: '10:00 AM – 6:00 PM' },
+      { day: 'May', hours: '10:00 AM – 6:00 PM' },
+      { day: 'June – August', hours: '9:00 AM – 8:00 PM' },
+    ],
+
+    serviceArea:
+      'Anglemont and boaters, residents, and visitors throughout Shuswap Lake.',
+
+    attributes: [
+      'Marina',
+      'Boat Rentals',
+      'Moorage',
+      'Fuel Dock',
+      'Boat Launch',
+      'Paddleboard Rentals',
+      'On-site Store',
+    ],
+
     highlights: [
-      { icon: 'i-tool', label: 'Custom Builds' },
-      { icon: 'i-badge', label: 'Quality Work' },
-      { icon: 'i-map', label: 'Local Knowledge' },
-      { icon: 'i-users', label: 'Homeowner Friendly' },
-    ],
-    gallery: [
-      '/images/listing-deck.jpg',
-      '/images/area-lake.jpg',
-      '/images/listing-bnb.jpg',
-      '/images/hero-shuswap.jpg',
-      '/images/listing-deck.jpg',
-      '/images/listing-plumbing.jpg',
+      { icon: 'i-pin', label: 'Shuswap Lake' },
+      { icon: 'i-tag', label: 'Boat Rentals' },
+      { icon: 'i-tree', label: 'Waterfront Marina' },
+      { icon: 'i-clock', label: 'Seasonal' },
     ],
   },
   {

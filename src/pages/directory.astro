@@ -156,8 +156,8 @@ const onlineBookingCount = listings.filter((item) =>
               data-summary={item.summary}
               data-attributes={item.attributes.join(' ')}
               data-status={item.status}
-              data-lat={item.coordinates.lat}
-              data-lng={item.coordinates.lng}
+              data-lat={item.coordinates?.lat}
+              data-lng={item.coordinates?.lng}
               data-href={`/listings/${item.slug}`}
             >
               <ListingCard item={item} variant="directory" />

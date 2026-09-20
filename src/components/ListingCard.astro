@@ -11,11 +11,12 @@ const { item, variant = 'directory' } = Astro.props
 const isHome = variant === 'home'
 const listingHref = getListingHref(item.slug)
 const statusMeta = listingStatusMeta[item.status]
+const imageSrc = item.image ?? '/images/area-lake.jpg'
 ---
 
 <article class:list={['business-card', `business-card--${variant}`]}>
   <a class="business-card__image" href={listingHref}>
-    <img src={item.image} alt={`${item.name} in ${item.area}`} />
+    <img src={imageSrc} alt={`${item.name} listing`} />
   </a>
 
   <div class="business-card__body">
@@ -45,11 +46,18 @@ const statusMeta = listingStatusMeta[item.status]
           <span>{item.area}</span>
         </p>
       ) : (
-        <p class="business-card__meta">
-          <span>{item.area}</span>
-          <span aria-hidden="true">•</span>
-          <span>{item.distance}</span>
-        </p>
+          <p class="business-card__meta">
+            <span>{item.area}</span>
+
+            {
+              item.distance && (
+                <>
+                  <span aria-hidden="true">•</span>
+                  <span>{item.distance}</span>
+                </>
+              )
+            }
+          </p>
       )
     }
 
@@ -62,10 +70,9 @@ const statusMeta = listingStatusMeta[item.status]
           <time>{item.lastChecked}</time>
         </div>
       ) : (
-        <div class="business-card__status">
-          <strong>Open now</strong>
-          <span aria-hidden="true">•</span>
-          <span>Closes {item.closes}</span>
+        <div class:list={['business-card__verified-row', `is-${item.status}`]}>
+          <span>{statusMeta.dateLabel}</span>
+          <time>{item.lastChecked}</time>
         </div>
       )
     }

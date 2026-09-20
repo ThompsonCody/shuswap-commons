@@ -24,9 +24,33 @@ const related =
     ? relatedCandidates.slice(0, 3)
     : listings.filter((item) => item.slug !== listing.slug).slice(0, 3)
 
-const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(listing.mapQuery)}`
-const phoneHref = `tel:${listing.phone.replace(/[^\d+]/g, '')}`
-const mailHref = `mailto:${listing.email}`
+const heroImage = listing.image ?? '/images/area-lake.jpg'
+
+
+const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+  listing.mapQuery
+)}`
+
+const mapEmbedSrc = `https://www.google.com/maps?q=${encodeURIComponent(
+  listing.mapQuery
+)}&output=embed`
+
+const phoneHref = listing.phone
+  ? `tel:${listing.phone.replace(/[^\d+]/g, '')}`
+  : null
+
+const mailHref = listing.email
+  ? `mailto:${listing.email}`
+  : null
+
+const displayWebsite =
+  listing.displayWebsite ??
+  listing.website
+    ?.replace(/^https?:\/\/(www\.)?/, '')
+    .replace(/\/$/, '')
+
+const hours = listing.hours ?? []
+const gallery = listing.gallery ?? []
 
 const socialLinks = [
   listing.socials?.instagram
@@ -37,7 +61,6 @@ const socialLinks = [
     : null,
 ].filter((item): item is { label: string; href: string } => Boolean(item))
 
-const mapStyle = `background: linear-gradient(rgba(206,229,201,.5), rgba(206,229,201,.5)), url('${listing.mapImage}') center/cover;`
 ---
 
 <BaseLayout
@@ -47,7 +70,7 @@ const mapStyle = `background: linear-gradient(rgba(206,229,201,.5), rgba(206,229
   <main>
     <section
       class="detail-hero"
-      style={`background-image: linear-gradient(90deg, rgba(5,12,13,.98), rgba(5,12,13,.74) 34%, rgba(5,12,13,.18) 78%), linear-gradient(to bottom, rgba(5,12,13,.04), #061011 100%), url('${listing.image}')`}
+      style={`background-image: linear-gradient(90deg, rgba(5,12,13,.98), rgba(5,12,13,.74) 34%, rgba(5,12,13,.18) 78%), linear-gradient(to bottom, rgba(5,12,13,.04), #061011 100%), url('${heroImage}')`}
     >
       <div class="wrapper">
         <div class="breadcrumbs">
@@ -79,22 +102,35 @@ const mapStyle = `background: linear-gradient(rgba(206,229,201,.5), rgba(206,229
         <p class="detail-summary">{listing.summary}</p>
 
         <div class="detail-actions">
-          <a class="btn amber" href={listing.website} target="_blank" rel="noreferrer">
-            <svg class="icon" aria-hidden="true">
-              <use href="#i-globe" />
-            </svg>
-            Visit Website
-            <svg class="icon" aria-hidden="true">
-              <use href="#i-up" />
-            </svg>
-          </a>
+          {
+            listing.website && (
+              <a
+                class="btn amber"
+                href={listing.website}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <svg class="icon" aria-hidden="true">
+                  <use href="#i-globe" />
+                </svg>
+                Visit Website
+                <svg class="icon" aria-hidden="true">
+                  <use href="#i-up" />
+                </svg>
+              </a>
+            )
+          }
 
-          <a class="btn" href={phoneHref}>
-            <svg class="icon" aria-hidden="true">
-              <use href="#i-phone" />
-            </svg>
-            {listing.phone}
-          </a>
+          {
+            phoneHref && listing.phone && (
+              <a class="btn" href={phoneHref}>
+                <svg class="icon" aria-hidden="true">
+                  <use href="#i-phone" />
+                </svg>
+                {listing.phone}
+              </a>
+            )
+          }
 
           <a class="btn" href={mapHref} target="_blank" rel="noreferrer">
             <svg class="icon" aria-hidden="true">
@@ -161,70 +197,100 @@ const mapStyle = `background: linear-gradient(rgba(206,229,201,.5), rgba(206,229
               Hours
             </h2>
 
-            <div class="hours">
-              {
-                listing.hours.map((item) => (
-                  <div>
-                    <span>{item.day}</span>
-                    <span>{item.hours}</span>
-                  </div>
-                ))
-              }
-            </div>
+              <div class="hours">
+                {
+                  hours.length > 0 ? (
+                    hours.map((item) => (
+                      <div>
+                        <span>{item.day}</span>
+                        <span>{item.hours}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <p>Hours have not yet been independently verified.</p>
+                  )
+                }
+              </div>
 
-            <p>Seasonal hours may vary. Call ahead when timing matters.</p>
+              {
+                hours.length > 0 && (
+                  <p>Seasonal hours may vary. Call ahead when timing matters.</p>
+                )
+              }
           </article>
 
           <article class="panel">
             <h2>Contact</h2>
 
             <div class="contact-list">
-              <p>
-                <svg class="icon" aria-hidden="true">
-                  <use href="#i-phone" />
-                </svg>
-                <a href={phoneHref}>{listing.phone}</a>
-              </p>
-
-              <p>
-                <svg class="icon" aria-hidden="true">
-                  <use href="#i-mail" />
-                </svg>
-                <a href={mailHref}>{listing.email}</a>
-              </p>
-
-              <p>
-                <svg class="icon" aria-hidden="true">
-                  <use href="#i-globe" />
-                </svg>
-                <a href={listing.website} target="_blank" rel="noreferrer">
-                  {listing.displayWebsite}
-                </a>
-              </p>   
-              <p>
-                <svg class="icon" aria-hidden="true">
-                  <use href="#i-pin" />
-                </svg>
-                <a href={mapHref} target="_blank" rel="noreferrer">
-                  {listing.address}
-                </a>
-              </p>
-              
               {
-                socialLinks.length > 0 && (
-                  <div class="contact-socials" aria-label={`${listing.name} social links`}>
-                    {socialLinks.map((social) => (
-                      <a href={social.href} target="_blank" rel="noreferrer">
-                        {social.label}
-                        <svg class="icon" aria-hidden="true">
-                          <use href="#i-up" />
-                        </svg>
-                      </a>
-                    ))}
-                  </div>
+                phoneHref && listing.phone && (
+                  <p>
+                    <svg class="icon" aria-hidden="true">
+                      <use href="#i-phone" />
+                    </svg>
+                    <a href={phoneHref}>{listing.phone}</a>
+                  </p>
                 )
               }
 
+              {
+                mailHref && listing.email && (
+                  <p>
+                    <svg class="icon" aria-hidden="true">
+                      <use href="#i-mail" />
+                    </svg>
+                    <a href={mailHref}>{listing.email}</a>
+                  </p>
+                )
+              }
+
+              {
+                listing.website && (
+                  <p>
+                    <svg class="icon" aria-hidden="true">
+                      <use href="#i-globe" />
+                    </svg>
+                    <a href={listing.website} target="_blank" rel="noreferrer">
+                      {displayWebsite}
+                    </a>
+                  </p>
+                )
+              }
+
+              {
+                listing.address && (
+                  <p>
+                    <svg class="icon" aria-hidden="true">
+                      <use href="#i-pin" />
+                    </svg>
+                    <a href={mapHref} target="_blank" rel="noreferrer">
+                      {listing.address}
+                    </a>
+                  </p>
+                )
+              }
+
+              {
+                socialLinks.length > 0 && (
+                  <div
+                    class="contact-socials"
+                    aria-label={`${listing.name} social links`}
+                  >
+                    {
+                      socialLinks.map((social) => (
+                        <a href={social.href} target="_blank" rel="noreferrer">
+                          {social.label}
+
+                          <svg class="icon" aria-hidden="true">
+                            <use href="#i-up" />
+                          </svg>
+                        </a>
+                      ))
+                    }
+                  </div>
+                )
+              }
             </div>
           </article>
 
@@ -266,38 +332,44 @@ const mapStyle = `background: linear-gradient(rgba(206,229,201,.5), rgba(206,229
         <article class="panel">
           <h2>Location</h2>
 
-          <div class="map-card" style={mapStyle}>
-            <svg class="icon" style="width:44px;height:44px" aria-hidden="true">
-              <use href="#i-pin" />
-            </svg>
+          <div class="map-card">
+            <iframe
+              src={mapEmbedSrc}
+              title={`Map showing ${listing.name}`}
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
           </div>
 
-          <a class="small-btn full" href={mapHref} target="_blank" rel="noreferrer">
+          <a
+            class="small-btn full"
+            href={mapHref}
+            target="_blank"
+            rel="noreferrer"
+          >
             Open in Google Maps
+
             <svg class="icon" aria-hidden="true">
               <use href="#i-up" />
             </svg>
           </a>
         </article>
 
-        <article class="panel">
-          <h2>Photos</h2>
+          {
+            gallery.length > 0 && (
+              <article class="panel">
+                <h2>Photos</h2>
 
-          <div class="photo-grid">
-            {
-              listing.gallery.map((img) => (
-                <img src={img} alt={`${listing.name} photo`} />
-              ))
-            }
-          </div>
-
-          <a class="small-btn full" href={getSubmitHref('edit', listing.slug)}>
-            View all photos ({listing.gallery.length})
-            <svg class="icon" aria-hidden="true">
-              <use href="#i-up" />
-            </svg>
-          </a>
-        </article>
+                <div class="photo-grid">
+                  {
+                    gallery.map((img) => (
+                      <img src={img} alt={`${listing.name} photo`} />
+                    ))
+                  }
+                </div>
+              </article>
+            )
+          }
 
         <article class="panel">
           <h2>You might also like</h2>
@@ -306,7 +378,10 @@ const mapStyle = `background: linear-gradient(rgba(206,229,201,.5), rgba(206,229
             {
               related.map((item) => (
                 <a class="mini-listing" href={getListingHref(item.slug)}>
-                  <img src={item.image} alt={item.name} />
+                  <img
+                    src={item.image ?? '/images/area-lake.jpg'}
+                    alt={item.name}
+                  />
 
                   <div>
                     <h3>{item.name}</h3>
@@ -354,3 +429,16 @@ const mapStyle = `background: linear-gradient(rgba(206,229,201,.5), rgba(206,229
     </section>
   </main>
 </BaseLayout>
+<style>
+  .map-card {
+    overflow: hidden;
+  }
+
+  .map-card iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 220px;
+    border: 0;
+  }
+</style>
